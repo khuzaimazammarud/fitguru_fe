@@ -16,9 +16,9 @@ const SubmitButton = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
     btn: {
-        backgroundColor: color.orange,
+        backgroundColor: color.green,
         padding: 18,
-        borderRadius: 10,
+        borderRadius: 30,
         marginTop: 10
     },
     btnText: {

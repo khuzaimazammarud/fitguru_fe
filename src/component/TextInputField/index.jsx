@@ -1,5 +1,6 @@
-import React from 'react';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+import { verticalScale, moderateScale } from "react-native-size-matters";
+
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import color from '../../styles/color';
 
@@ -27,10 +28,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomColor: color.lightgrey,
-        borderBottomWidth: 1,
-        paddingBottom: 8,
-        marginBottom: 25
+        backgroundColor: 'white', 
+        marginVertical: verticalScale(8),
+        padding: moderateScale(15),
+        borderRadius: 10
     },
     input: {
         flex: 1,
@@ -38,11 +39,11 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 20,
-        color: color.grey,
+        color: color.black,
         marginRight: 5
     },
     text: {
-        color: color.orange,
+        color: color.green,
         fontWeight: '700'
     }
 });

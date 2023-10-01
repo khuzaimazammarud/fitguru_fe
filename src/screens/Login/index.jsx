@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
-        backgroundColor: 'white'
     },
     image: {
         width: "100%",
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
         marginTop: 12
     },
     text: {
-        color: color.orange,
+        color: color.green,
         fontWeight: '700',
     }
 })
