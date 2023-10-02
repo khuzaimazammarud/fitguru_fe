@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Image,Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, Image, Alert, View } from 'react-native';
+import { SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
 
 import { ShowError, ShowSuccess } from '../../utils/flashMessages';
@@ -14,6 +14,9 @@ import imagePath from '../../constants/imagePath';
 import BreadCrumbs from '../../component/SignupComponent/breadCrumbs';
 import Info from '../../component/SignupComponent/info';
 import Gender from '../../component/SignupComponent/gender';
+import BodyInfo from '../../component/SignupComponent/bodyInfo';
+import GoalInfo from '../../component/SignupComponent/goal';
+import color from '../../styles/color';
 
 
 const Signup = ({ navigation }) => {
@@ -26,7 +29,7 @@ const Signup = ({ navigation }) => {
     });
     const [steps, setSteps] = useState(1);
 
-    //function handle login functionality
+    //handling api finction
     const onSignup = async () => {
 
         try {
@@ -53,13 +56,17 @@ const Signup = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-                <Image
-                    source={imagePath.logo}
-                    style={styles.image}
-                />
-                <BreadCrumbs setSteps={setSteps} steps={steps} />
-                {steps === 1 ? <Info data={data} setData={setData} setSteps={setSteps} navigation={navigation} /> : null}
-                {steps === 2 ? <Gender />: null}
+            {/* <View style = {styles.imageholder}>
+            <Image
+                source={imagePath.logo}
+                style={styles.image}
+            />
+            </View> */}
+            <BreadCrumbs setSteps={setSteps} steps={steps} />
+            {steps === 1 ? <Info data={data} setData={setData} setSteps={setSteps} navigation={navigation} /> : null}
+            {steps === 2 ? <Gender data={data} setSteps={setSteps} /> : null}
+            {steps === 3 ? <BodyInfo data={data} setSteps={setSteps} /> : null}
+            {steps === 4 ? <GoalInfo data={data} setSteps={setSteps} /> : null}
         </SafeAreaView>
     )
 }
@@ -71,8 +78,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        width: "100%",
-        height: "20%",
+        width: '100%',
+        resizeMode: 'contain',
     },
 })
 

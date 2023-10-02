@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         borderWidth: 0.2,
-        borderBlockColor: color.green,
+        borderBlockColor: color.maincolor,
         padding: 3,
     },
     btnTabActive: {
-        backgroundColor: color.green,
+        backgroundColor: color.maincolor,
     },
     text: {
         fontSize: 16,

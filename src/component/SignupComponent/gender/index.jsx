@@ -9,7 +9,7 @@ import SubmitButton from "../../ButtonSubmit";
 //constants
 import color from "../../../styles/color";
 
-function Gender({ data, navigation }) {
+function Gender({ data, setSteps, navigation }) {
 
     const [selected, setSelected] = useState(1);
 
@@ -44,7 +44,10 @@ function Gender({ data, navigation }) {
             </View>
             <Text style={styles.text}>For build a personalize plan we require your gender</Text>
             <View>
-                <SubmitButton text='Next' />
+                <SubmitButton
+                    text='Next'
+                    onPress={() => setSteps(3)}
+                />
             </View>
         </View>
     )
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
         borderRadius: moderateScale(10)
     },
     innerRadio: {
-        backgroundColor: color.black,
+        backgroundColor: color.orange,
         width: scale(14),
         height: scale(14),
         borderRadius: moderateScale(7),

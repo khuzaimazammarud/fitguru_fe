@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import color from '../../styles/color';
 
@@ -16,7 +16,7 @@ const SubmitButton = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
     btn: {
-        backgroundColor: color.green,
+        backgroundColor: color.maincolor,
         padding: 18,
         borderRadius: 30,
         marginTop: 10

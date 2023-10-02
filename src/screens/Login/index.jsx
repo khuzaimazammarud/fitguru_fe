@@ -1,6 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import { Text, StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import { Text, StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { verticalScale } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
 import { Singin } from '../../store/actions/auth';
 
@@ -14,7 +15,7 @@ import { ShowError } from '../../utils/flashMessages';
 import color from '../../styles/color';
 import imagePath from '../../constants/imagePath';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
 
     const [data, setData] = useState({
         email: '',
@@ -35,15 +36,16 @@ const Login = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View>
+            <View style={styles.imageholder}>
                 <Image
                     source={imagePath.logo}
                     style={styles.image}
                 />
-                <Text style={styles.heading}>Login</Text>
+            </View>
+            <View style={styles.loginContainer}>
                 <TextInputField
                     placeholder="Enter your email"
-                    icon_name="alternate-email"
+                    icon_name="envelope"
                     value={data.email}
                     isSecure={false}
                     onChangeText={(text) => setData({ ...data, email: text })}
@@ -78,17 +80,18 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20,
+        padding: 20,
+        justifyContent: 'center'
+    },
+    imageholder: {
+        flex: 1,
+    },
+    loginContainer: {
+        flex: 1
     },
     image: {
-        width: "100%",
-        height: "40%",
-    },
-    heading: {
-        marginVertical: 20,
-        fontSize: 30,
-        fontWeight: '500',
-        letterSpacing: 1
+        width: '100%',
+        resizeMode: 'contain',
     },
     register: {
         flexDirection: 'row',
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
         marginTop: 12
     },
     text: {
-        color: color.green,
+        color: color.orange,
         fontWeight: '700',
     }
 })

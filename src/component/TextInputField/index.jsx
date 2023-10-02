@@ -1,13 +1,13 @@
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { verticalScale, moderateScale } from "react-native-size-matters";
 
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import color from '../../styles/color';
 
 const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onChangeText, onPress }) => {
     return (
         <View style={styles.container}>
-            <MaterialIcon name={icon_name} style={styles.icon}/>
+            <FontAwesome name={icon_name} style={styles.icon}/>
             <TextInput
                 style={styles.input}
                 value={value}
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     text: {
-        color: color.green,
+        color: color.orange,
         fontWeight: '700'
     }
 });

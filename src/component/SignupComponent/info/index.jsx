@@ -28,14 +28,14 @@ function Info({data, setSteps,navigation}) {
             <Text style={styles.desc}>Now Let's set up your Info</Text>
             <TextInputField
                 placeholder="Username"
-                icon_name="person"
+                icon_name="user"
                 value={data.username}
                 isSecure={false}
                 onChangeText={(text) => setData({ ...data, username: text })}
             />
             <TextInputField
                 placeholder="Email ID"
-                icon_name="alternate-email"
+                icon_name="envelope"
                 value={data.email}
                 isSecure={false}
                 onChangeText={(text) => setData({ ...data, email: text })}
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         marginTop: verticalScale(12)
     },
     text: {
-        color: color.green,
+        color: color.orange,
         fontWeight: '700',
     }
 });
