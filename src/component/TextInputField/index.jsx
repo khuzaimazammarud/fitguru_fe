@@ -14,7 +14,7 @@ const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onCh
                 placeholder={placeholder}
                 secureTextEntry={isSecure}
                 onChangeText={onChangeText}
-                keyboardType={isNumber ? 'number-pad': 'default'}
+                keyboardType={isNumber ? 'decimal-pad': 'default'}
             />
             {isSignin ? (
                 <TouchableOpacity onPress={onPress}>
