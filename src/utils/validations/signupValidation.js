@@ -21,6 +21,9 @@ const signupValidation = (data) => {
     if(checkMinLength(data.password, 8)) {
         return 'Password should be of atleast 8 Character';
     }
+    if(data.password !== data.confirmPassword) {
+        return 'Password doesnot matches';
+    }
 }
 
 export default signupValidation;

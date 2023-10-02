@@ -1,5 +1,7 @@
-import {TouchableOpacity, View, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
 import { verticalScale, scale, moderateScale } from "react-native-size-matters";
+import signupValidation from "../../../utils/validations/signupValidation"
+import { ShowError } from "../../../utils/flashMessages";
 
 import TextInputField from "../../TextInputField";
 import SubmitButton from "../../ButtonSubmit";
@@ -22,9 +24,19 @@ const tabs = [
     },
 ]
 
-function Info({data, setSteps,navigation}) {
+function Info({ data, setData, setSteps, navigation }) {
+
+    const handleClick = () => {
+        const isvalid = signupValidation(data);
+        if (!isvalid) {
+            setSteps(2);
+        } else {
+            ShowError(isvalid);
+        }
+    }
+
     return (
-        <View style= {styles.container}>
+        <View style={styles.container}>
             <Text style={styles.desc}>Now Let's set up your Info</Text>
             <TextInputField
                 placeholder="Username"
@@ -58,7 +70,7 @@ function Info({data, setSteps,navigation}) {
             />
             <SubmitButton
                 text="Next"
-                onPress={() => setSteps(2)}
+                onPress={handleClick}
             />
             <View style={styles.register}>
                 <Text>
@@ -77,13 +89,13 @@ function Info({data, setSteps,navigation}) {
 const styles = StyleSheet.create({
     container: {
         marginVertical: verticalScale(20)
-    },  
+    },
     desc: {
         textAlign: 'center',
         color: color.black,
         fontSize: 24,
         fontWeight: 'bold',
-        paddingHorizontal: moderateScale(40), 
+        paddingHorizontal: moderateScale(40),
         marginVertical: verticalScale(12)
     },
     register: {

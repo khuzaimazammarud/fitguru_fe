@@ -9,7 +9,7 @@ import SubmitButton from "../../ButtonSubmit";
 //constants
 import color from "../../../styles/color";
 
-function Gender({ data, setSteps, navigation }) {
+function Gender({ data, setData, setSteps, navigation }) {
 
     const [selected, setSelected] = useState(1);
 
@@ -46,7 +46,11 @@ function Gender({ data, setSteps, navigation }) {
             <View>
                 <SubmitButton
                     text='Next'
-                    onPress={() => setSteps(3)}
+                    onPress={
+                        selected === 1 ? 
+                        () => {setData({ ...data, gender: 'male' }), setSteps(3)} :
+                        () => {setData({ ...data, gender: 'female' }), setSteps(3)}
+                    }
                 />
             </View>
         </View>

@@ -4,7 +4,7 @@ import { verticalScale, moderateScale } from "react-native-size-matters";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import color from '../../styles/color';
 
-const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onChangeText, onPress }) => {
+const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onChangeText, onPress, isNumber}) => {
     return (
         <View style={styles.container}>
             <FontAwesome name={icon_name} style={styles.icon}/>
@@ -14,6 +14,7 @@ const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onCh
                 placeholder={placeholder}
                 secureTextEntry={isSecure}
                 onChangeText={onChangeText}
+                keyboardType={isNumber ? 'number-pad': 'default'}
             />
             {isSignin ? (
                 <TouchableOpacity onPress={onPress}>
