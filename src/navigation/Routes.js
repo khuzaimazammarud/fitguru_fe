@@ -25,7 +25,9 @@ function Routes() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {
-          auth.isAuthenticated ? MainStack(Stack):AuthStact(Stack)
+          auth.isAuthenticated ? 
+          <Stack.Screen name = 'Main' component={MainStack} />:
+          AuthStact(Stack)
         } 
       </Stack.Navigator>
     </NavigationContainer>
