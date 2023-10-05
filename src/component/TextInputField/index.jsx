@@ -17,8 +17,10 @@ const TextInputField = ({ value, icon_name, isSecure, placeholder,isSignin, onCh
                 keyboardType={isNumber ? 'decimal-pad': 'default'}
             />
             {isSignin ? (
-                <TouchableOpacity onPress={onPress}>
-                <Text style={styles.text}>Forgot?</Text>
+                <TouchableOpacity 
+                    onPress={onPress}
+                >
+                    <Text style={styles.text}>Forgot?</Text>
                 </TouchableOpacity>
             ):null}
         </View>
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     icon: {
         fontSize: 20,
         color: color.black,
-        marginRight: 5
+        marginRight: moderateScale(10)
     },
     text: {
         color: color.orange,

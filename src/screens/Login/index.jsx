@@ -14,6 +14,7 @@ import { ShowError } from '../../utils/flashMessages';
 //constants
 import color from '../../styles/color';
 import imagePath from '../../constants/imagePath';
+import NewtoApp from '../../component/NewtoApp';
 
 const Login = ({ navigation }) => {
 
@@ -57,21 +58,17 @@ const Login = ({ navigation }) => {
                     isSignin={true}
                     value={data.password}
                     onChangeText={(text) => setData({ ...data, password: text })}
+                    onPress = {() => navigation.navigate('ForgotPassword')}
                 />
                 <SubmitButton
                     text="Login"
                     onPress={onLogin}
                 />
-                <View style={styles.register}>
-                    <Text>
-                        New to the app?
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Signup')}
-                    >
-                        <Text style={styles.text}> Register</Text>
-                    </TouchableOpacity>
-                </View>
+                <NewtoApp 
+                    text='New to the app?'
+                    onPress={() => navigation.navigate('Signup')}
+                    screen='Register' 
+                />
             </View>
         </SafeAreaView>
     )
@@ -93,15 +90,6 @@ const styles = StyleSheet.create({
         width: '100%',
         resizeMode: 'contain',
     },
-    register: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 12
-    },
-    text: {
-        color: color.orange,
-        fontWeight: '700',
-    }
 })
 
 export default Login;
