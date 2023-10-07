@@ -11,7 +11,7 @@ import TextInputField from '../../component/TextInputField';
 import SubmitButton from '../../component/ButtonSubmit';
 import { ShowError } from '../../utils/flashMessages';
 
-const ForgotPassword = ({ navigation }) => {
+const ChangePasswordScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [loader, setLoader]  = useState(false);
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ForgotPassword;
+export default ChangePasswordScreen;

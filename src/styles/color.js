@@ -9,5 +9,6 @@ export default {
     black: '#2f3640',
     yellow: '#f1d533',
     maincolor: '#68d2c4',
-    mainLite: '#b4cfc9'
+    mainLite: '#b4cfc9',
+    red: "#f5162c"
 }

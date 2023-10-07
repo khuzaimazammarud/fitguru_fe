@@ -22,7 +22,6 @@ function GoalInfo({onSignup}) {
         
         function loopIteration() {
           if (i < text.length) {
-            // Your code here
             partialText += text[i];
             setSuggestion(partialText);
             i++;
