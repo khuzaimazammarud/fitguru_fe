@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable'
 //screens
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
+import Post from "../screens/Community/Post";
 
 //componant
 import Icon, { Icons } from "../component/Icons";
@@ -17,8 +18,8 @@ import { useEffect } from "react";
 
 
 const TabArr = [
+    { route: 'Like', label: 'Like', type: Icons.MaterialCommunityIcons, activeIcon: 'account-group', inActiveIcon: 'account-group-outline', component: Post },
     { route: 'Home', label: 'Home', type: Icons.Ionicons, activeIcon: 'grid', inActiveIcon: 'grid-outline', component: Home },
-    { route: 'Like', label: 'Like', type: Icons.MaterialCommunityIcons, activeIcon: 'heart-plus', inActiveIcon: 'heart-plus-outline', component: Profile },
     { route: 'Search', label: 'Search', type: Icons.MaterialCommunityIcons, activeIcon: 'timeline-plus', inActiveIcon: 'timeline-plus-outline', component: Home },
     { route: 'Account', label: 'Account', type: Icons.FontAwesome, activeIcon: 'user-circle', inActiveIcon: 'user-circle-o', component: Profile },
 ]
