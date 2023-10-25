@@ -5,6 +5,7 @@ import { ShowError } from "../../../utils/flashMessages";
 
 import TextInputField from "../../TextInputField";
 import SubmitButton from "../../ButtonSubmit";
+import NewtoApp from "../../NewtoApp"
 
 import color from "../../../styles/color";
 
@@ -72,16 +73,11 @@ function Info({ data, setData, setSteps, navigation }) {
                 text="Next"
                 onPress={handleClick}
             />
-            <View style={styles.register}>
-                <Text>
-                    Already Registered?
-                </Text>
-                <TouchableOpacity
+            <NewtoApp 
+                    text='Already have Account?'
                     onPress={() => navigation.navigate('Login')}
-                >
-                    <Text style={styles.text}> Login</Text>
-                </TouchableOpacity>
-            </View>
+                    screen='Login' 
+            />
         </View>
     )
 }
