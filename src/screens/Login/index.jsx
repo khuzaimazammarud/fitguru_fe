@@ -1,8 +1,9 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import { Text, StyleSheet, Image, View, TouchableOpacity } from 'react-native';
-import { verticalScale } from 'react-native-size-matters';
+import { StyleSheet, View } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
+import LottieView from 'lottie-react-native'
 import { Singin } from '../../store/actions/auth';
 
 
@@ -12,9 +13,8 @@ import SubmitButton from '../../component/ButtonSubmit';
 import { ShowError } from '../../utils/flashMessages';
 
 //constants
-import color from '../../styles/color';
-import imagePath from '../../constants/imagePath';
 import NewtoApp from '../../component/NewtoApp';
+import animationPath from '../../constants/animationPath';
 
 const Login = ({ navigation }) => {
 
@@ -38,10 +38,7 @@ const Login = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.imageholder}>
-                <Image
-                    source={imagePath.logo}
-                    style={styles.image}
-                />
+                <LottieView source={animationPath.onBoarding} autoPlay/>
             </View>
             <View style={styles.loginContainer}>
                 <TextInputField
@@ -58,7 +55,7 @@ const Login = ({ navigation }) => {
                     isSignin={true}
                     value={data.password}
                     onChangeText={(text) => setData({ ...data, password: text })}
-                    onPress = {() => navigation.navigate('ForgotPassword')}
+                    onPress = {() => navigation.navigate('SendEmail')}
                 />
                 <SubmitButton
                     text="Login"
@@ -77,7 +74,7 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        padding: moderateScale(15),
         justifyContent: 'center'
     },
     imageholder: {

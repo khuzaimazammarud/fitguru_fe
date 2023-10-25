@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters';
 import axios from 'axios'
-import { sendEmail } from '../../configs/urls';
+import { sendEmail } from '../../../configs/urls';
 
-import imagePath from '../../constants/imagePath';
-import color from '../../styles/color';
-import TextInputField from '../../component/TextInputField';
-import SubmitButton from '../../component/ButtonSubmit';
-import { ShowError } from '../../utils/flashMessages';
+import imagePath from '../../../constants/imagePath';
+import color from '../../../styles/color';
+import TextInputField from '../../../component/TextInputField';
+import SubmitButton from '../../../component/ButtonSubmit';
+import { ShowError } from '../../../utils/flashMessages';
 
-const ForgotPassword = ({ navigation }) => {
+const SendEmail = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [loader, setLoader]  = useState(false);
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ForgotPassword;
+export default SendEmail;

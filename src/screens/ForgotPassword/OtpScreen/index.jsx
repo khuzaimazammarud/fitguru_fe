@@ -31,6 +31,9 @@ const OtpScreen = ({ navigation, route }) => {
         try {
             const response = await axios.post(VerifyOtp, { userId, otp: conOtp });
             ShowSuccess(response.data.message);
+            navigation.navigate('changePasswordScreen', {
+                userId: userId
+            })
         } catch (error) {
             setValid(false);
             ShowError(error.response.data.message)
