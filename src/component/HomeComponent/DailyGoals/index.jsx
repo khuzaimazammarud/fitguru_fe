@@ -1,0 +1,175 @@
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
+import { useFonts } from "expo-font";
+import * as Progress from "react-native-progress";
+
+const banner = require("../../../assets/images/bg2.jpg");
+const walk = require("../../../assets/images/walk.png");
+const yoga = require("../../../assets/images/yoga.png");
+const cycle = require("../../../assets/images/cycle.png");
+
+const DailyGoals = () => {
+  const [fontsLoaded] = useFonts({
+    MontserratBlack: require("../../../../assets/Montserrat-Black.ttf"),
+    MontserratBold: require("../../../../assets/Montserrat-Bold.ttf"),
+    MontserratExtraBold: require("../../../../assets/Montserrat-ExtraBold.ttf"),
+    MontserratSemiBold: require("../../../../assets/Montserrat-SemiBold.ttf"),
+    MontserratRegular: require("../../../../assets/Montserrat-Regular.ttf"),
+  });
+  if (!fontsLoaded) {
+    return undefined;
+  }
+  return (
+    <>
+      <Banner />
+      <View style={{ marginHorizontal: "3%" }}>
+        <Label>Your Activities</Label>
+        <View style={{ flexDirection: "row" }}>
+          <ScrollView horizontal>
+            {data.map((item, index) => (
+              <Card data={item} index={index} />
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+    </>
+  );
+};
+
+export default DailyGoals;
+
+const Card = ({ data, index }) => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        height: index === 1 ? 180 : 150,
+        padding: 10,
+        alignSelf: "center",
+        backgroundColor: data.color,
+        justifyContent: "space-between",
+        marginHorizontal: 8,
+        borderRadius: 10,
+        shadowColor: "lightgrey",
+        shadowOffset: { width: -5, height: 5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        marginBottom: 4,
+      }}
+    >
+      <Image source={data.image} style={{ height: 25, width: 25 }} />
+      <View style={{ alignSelf: "center", margin: 5 }}>
+        <Progress.Circle
+          animated={false}
+          size={50}
+          progress={data.status / 100}
+          showsText
+          unfilledColor="#ededed"
+          borderColor="#ededed"
+          color={data.darkColor}
+          direction="counter-clockwise"
+          fill="white"
+          strokeCap="round"
+          thickness={5}
+          style={{
+            shadowColor: "grey",
+            shadowOffset: { width: 2, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 1,
+          }}
+          textStyle={{
+            fontSize: 14,
+            fontFamily: "MontserratBlack",
+          }}
+        />
+      </View>
+      <View>
+        <Text style={{ fontSize: 10, fontFamily: "MontserratBold" }}>
+          {"Day     1"}
+        </Text>
+        <Text style={{ fontSize: 10, fontFamily: "MontserratRegular" }}>
+          {"Time    20 Min"}
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontFamily: "MontserratRegular" }}>{data.name}</Text>
+      </View>
+    </View>
+  );
+};
+
+const Banner = () => (
+  <>
+    <ImageBackground style={styles.banner} source={banner}>
+      {/* <View style={styles.banner}> */}
+      <View style={styles.bannerContainer}>
+        <Text style={styles.offerText}>DAILY GOALS</Text>
+        {/* </View> */}
+      </View>
+    </ImageBackground>
+  </>
+);
+
+const Label = ({ children }) => <Text style={styles.label}>{children}</Text>;
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+
+  banner: {
+    marginTop: "10%",
+    padding: 30,
+    resizeMode: "contain",
+    borderRadius: 20,
+    overflow: "hidden",
+    flexDirection: "row",
+  },
+  bannerContainer: { flex: 1 },
+  offerText: {
+    color: "white",
+    fontSize: 36,
+    fontFamily: "MontserratExtraBold",
+    alignSelf: "center",
+  },
+
+  label: { fontSize: 24, marginVertical: 10, fontFamily: "MontserratSemiBold" },
+});
+
+const data = [
+  {
+    name: "Cycling",
+    status: 85,
+    image: cycle,
+    lightColor: "#f8e4d9",
+    color: "#fcf1ea",
+    darkColor: "#fac5a4",
+  },
+  {
+    name: "Walking",
+    status: 25,
+    image: walk,
+    lightColor: "#d7f0f7",
+    color: "#e8f7fc",
+    darkColor: "#aceafc",
+  },
+  {
+    name: "Yoga",
+    status: 85,
+    image: yoga,
+    lightColor: "#dad5fe",
+    color: "#e7e3ff",
+    darkColor: "#8860a2",
+  },
+];
