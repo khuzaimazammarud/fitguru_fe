@@ -35,7 +35,7 @@ const ImageContainer = ({ image, height = "100%", width = "100%" }) => (
 
 const HeaderTitle = () => (
   <View style={styles.title}>
-    <Text style={styles.bigTitle}>Hi, khuzema</Text>
+    <Text style={styles.bigTitle}>Hi, khundknd</Text>
     <Text style={styles.smallTitle}>Sept 10th, 2023</Text>
   </View>
 );
