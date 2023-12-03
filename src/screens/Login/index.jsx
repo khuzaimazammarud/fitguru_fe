@@ -66,6 +66,7 @@ const Login = ({ navigation }) => {
                     onPress={() => navigation.navigate('Signup')}
                     screen='Register' 
                 />
+                {console.log(data)}
             </View>
         </SafeAreaView>
     )
