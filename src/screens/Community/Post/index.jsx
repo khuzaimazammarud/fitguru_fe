@@ -16,7 +16,7 @@ const Post = () => {
         <View style={styles.userInfo}>
           <Image source={imagePath.userProfile} style={styles.userImage} />
           <View style={styles.userInfoText}>
-            <Text style={styles.text}>Khuzema</Text>
+            <Text style={styles.text}>khuzema</Text>
             <Text style={styles.textLite}>4min ago</Text>
           </View>
         </View>
