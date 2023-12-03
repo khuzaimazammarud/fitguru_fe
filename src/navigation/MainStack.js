@@ -16,10 +16,9 @@ import color from "../styles/color";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-
 const TabArr = [
-    { route: 'Like', label: 'Like', type: Icons.MaterialCommunityIcons, activeIcon: 'account-group', inActiveIcon: 'account-group-outline', component: Post },
     { route: 'Home', label: 'Home', type: Icons.Ionicons, activeIcon: 'grid', inActiveIcon: 'grid-outline', component: Home },
+    { route: 'Like', label: 'Like', type: Icons.MaterialCommunityIcons, activeIcon: 'account-group', inActiveIcon: 'account-group-outline', component: Post },
     { route: 'Search', label: 'Search', type: Icons.MaterialCommunityIcons, activeIcon: 'timeline-plus', inActiveIcon: 'timeline-plus-outline', component: Home },
     { route: 'Account', label: 'Account', type: Icons.FontAwesome, activeIcon: 'user-circle', inActiveIcon: 'user-circle-o', component: Profile },
 ]
@@ -76,7 +75,7 @@ export default function () {
             {
                 TabArr.map((item, idx) => {
                     return (
-                        <Tab.Screen name={item.route} component={item.component}
+                        <Tab.Screen key={idx} name={item.route} component={item.component}
                             options={{
                                 tabBarShowLabel: false,
                                 tabBarButton: (props) => <TabButton {...props} item={item} />
