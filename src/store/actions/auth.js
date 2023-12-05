@@ -1,4 +1,3 @@
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LOGIN } from "../../configs/urls";
 import setAuthToken from "../../utils/authToken";
@@ -19,10 +18,12 @@ export const Singin = userData => async dispatch => {
 
     try {
         const response = await axios.post(LOGIN, userData);
+        console.log("🚀 ~ file: auth.js:21 ~ Singin ~ userData:", userData)
         const token = response.data.token;
         await AsyncStorage.setItem('jwt-token', token);
         setAuthToken(token);
         const decode = jwtDecode(token);
+        await AsyncStorage.setItem('userData', decode);
         dispatch(setCurrentUser(decode));
     } catch (error) {
         ShowError(error.response.data.message);

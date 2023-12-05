@@ -18,14 +18,7 @@ import { useEffect } from "react";
 
 const TabArr = [
   {
-    route: "Like",
-    label: "Like",
-    type: Icons.MaterialCommunityIcons,
-    activeIcon: "account-group",
-    inActiveIcon: "account-group-outline",
-    component: Post,
-  },
-  {
+    key : 1,
     route: "Home",
     label: "Home",
     type: Icons.Ionicons,
@@ -34,6 +27,16 @@ const TabArr = [
     component: Home,
   },
   {
+    key : 2,
+    route: "Post",
+    label: "Post",
+    type: Icons.MaterialCommunityIcons,
+    activeIcon: "account-group",
+    inActiveIcon: "account-group-outline",
+    component: Post,
+  },
+  {
+    key : 3,
     route: "Search",
     label: "Search",
     type: Icons.MaterialCommunityIcons,
@@ -42,6 +45,7 @@ const TabArr = [
     component: Home,
   },
   {
+    key : 4,
     route: "Account",
     label: "Account",
     type: Icons.FontAwesome,
@@ -107,6 +111,7 @@ export default function () {
       {TabArr.map((item, idx) => {
         return (
           <Tab.Screen
+            key={idx}
             name={item.route}
             component={item.component}
             options={{

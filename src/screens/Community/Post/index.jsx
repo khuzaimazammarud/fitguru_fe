@@ -6,12 +6,14 @@ import { moderateScale, verticalScale, scale } from "react-native-size-matters";
 
 import imagePath from "../../../constants/imagePath";
 import Icon, { Icons } from "../../../component/Icons";
+import Header from "../../../component/HomeComponent/Header";
 
-const Post = () => {
+const Post = ({navigation}) => {
   const [like, setLike] = useState(0);
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header navigation={navigation}/>
       <View style={styles.card}>
         <View style={styles.userInfo}>
           <Image source={imagePath.userProfile} style={styles.userImage} />
@@ -67,6 +69,7 @@ const styles = StyleSheet.create({
     padding: moderateScale(15),
   },
   card: {
+    marginTop: moderateScale(10),
     backgroundColor: color.white,
     borderRadius: moderateScale(10),
     padding: moderateScale(10),
@@ -103,6 +106,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: undefined,
     aspectRatio: 1,
+    borderRadius: 10
   },
   interactionWrapper: {
     flexDirection: "row",
