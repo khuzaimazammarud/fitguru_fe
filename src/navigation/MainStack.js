@@ -7,6 +7,7 @@ import * as Animatable from "react-native-animatable";
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Post from "../screens/Community/Post";
+import Food from "../screens/FoodDatabase/Food";
 
 //componant
 import Icon, { Icons } from "../component/Icons";
@@ -15,6 +16,7 @@ import Icon, { Icons } from "../component/Icons";
 import color from "../styles/color";
 import { useRef } from "react";
 import { useEffect } from "react";
+
 
 const TabArr = [
   {
@@ -51,7 +53,7 @@ const TabArr = [
     type: Icons.FontAwesome,
     activeIcon: "user-circle",
     inActiveIcon: "user-circle-o",
-    component: Profile,
+    component: Food,
   },
 ];
 

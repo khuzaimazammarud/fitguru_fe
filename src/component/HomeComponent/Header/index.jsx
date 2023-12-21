@@ -29,6 +29,7 @@ const Header = ({ navigation }) => {
 
   return (
     <View style={styles.header}>
+      {console.log(auth.userData)}
       <BackButton navigation={navigation} />
       <HeaderTitle name={auth.userData.name} />
       <ImageContainer image={headerImage} navigation={navigation}/>
