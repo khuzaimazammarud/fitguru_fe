@@ -26,6 +26,13 @@ const imageData = [
     likes: 200,
     comments: 30,
   },
+  {
+    id: 3,
+    uri: require("../../assets/images/avatar3.png"),
+    caption: "Adorable Kittens",
+    likes: 200,
+    comments: 30,
+  },
   // Add more images as needed
 ];
 
