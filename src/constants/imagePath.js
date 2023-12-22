@@ -6,4 +6,5 @@ export default {
     userProfile: require("../assets/images/userProfile.webp"),
     userPost: require("../assets/images/post3.jpg"),
     userpost2: require("../assets/images/post2.png"),
+    placeHolder: require("../assets/images/placeholder.jpg")
 }

@@ -1,6 +1,9 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { scale, moderateScale, verticalScale } from "react-native-size-matters";
+import { moderateScale, verticalScale } from "react-native-size-matters";
+
 import * as Animatable from "react-native-animatable";
 
 //screens
@@ -8,6 +11,7 @@ import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Post from "../screens/Community/Post";
 import Food from "../screens/FoodDatabase/Food";
+// import FoodView from '../screens/FoodDatabase/FoodView';
 
 //componant
 import Icon, { Icons } from "../component/Icons";
@@ -44,7 +48,7 @@ const TabArr = [
     type: Icons.MaterialCommunityIcons,
     activeIcon: "timeline-plus",
     inActiveIcon: "timeline-plus-outline",
-    component: Home,
+    component: Profile,
   },
   {
     key : 4,
@@ -58,6 +62,7 @@ const TabArr = [
 ];
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const TabButton = (props) => {
   const { item, onPress, accessibilityState } = props;
