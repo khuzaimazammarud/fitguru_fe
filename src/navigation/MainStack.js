@@ -5,11 +5,11 @@ import * as Animatable from "react-native-animatable";
 
 //screens
 import Home from "../screens/Home";
-import Profile from "../screens/Profile";
 import Post from "../screens/Community/Post";
 import Reels from "../screens/Community/Reels";
+import UserProfile from "../screens/UserProfile/index";
 
-//componant
+//component
 import Icon, { Icons } from "../component/Icons";
 
 //constant
@@ -43,7 +43,7 @@ const TabArr = [
     type: Icons.MaterialCommunityIcons,
     activeIcon: "timeline-plus",
     inActiveIcon: "timeline-plus-outline",
-    component: Home,
+    component: UserProfile,
   },
   {
     key: 4,
