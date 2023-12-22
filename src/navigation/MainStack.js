@@ -8,12 +8,15 @@ import * as Animatable from "react-native-animatable";
 
 //screens
 import Home from "../screens/Home";
-import Profile from "../screens/Profile";
 import Post from "../screens/Community/Post";
-import Food from "../screens/FoodDatabase/Food";
-// import FoodView from '../screens/FoodDatabase/FoodView';
 
-//componant
+import Reels from "../screens/Community/Reels";
+import UserProfile from "../screens/UserProfile/index";
+
+import Food from "../screens/FoodDatabase/Food";
+
+
+//component
 import Icon, { Icons } from "../component/Icons";
 
 //constant
@@ -24,7 +27,7 @@ import { useEffect } from "react";
 
 const TabArr = [
   {
-    key : 1,
+    key: 1,
     route: "Home",
     label: "Home",
     type: Icons.Ionicons,
@@ -33,7 +36,7 @@ const TabArr = [
     component: Home,
   },
   {
-    key : 2,
+    key: 2,
     route: "Post",
     label: "Post",
     type: Icons.MaterialCommunityIcons,
@@ -42,22 +45,22 @@ const TabArr = [
     component: Post,
   },
   {
-    key : 3,
+    key: 3,
     route: "Search",
     label: "Search",
     type: Icons.MaterialCommunityIcons,
     activeIcon: "timeline-plus",
     inActiveIcon: "timeline-plus-outline",
-    component: Profile,
+    component: UserProfile,
   },
   {
-    key : 4,
+    key: 4,
     route: "Account",
     label: "Account",
     type: Icons.FontAwesome,
     activeIcon: "user-circle",
     inActiveIcon: "user-circle-o",
-    component: Food,
+    component: Reels,
   },
 ];
 

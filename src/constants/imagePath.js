@@ -1,4 +1,5 @@
 export default {
+
     logo: require("../assets/images/fit.png"),
     forgotavatar: require("../assets/images/forgotAvatar.png"),
     otpAvatar: require("../assets/images/otpAvatar.png"),
@@ -8,3 +9,4 @@ export default {
     userpost2: require("../assets/images/post2.png"),
     placeHolder: require("../assets/images/placeholder.jpg")
 }
+
