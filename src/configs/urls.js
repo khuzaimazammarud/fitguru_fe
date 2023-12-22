@@ -9,3 +9,4 @@ export const sendEmail = getApiUrl("/users/sendemail");
 export const VerifyOtp = getApiUrl("/users/verifyOtp");
 export const UpdatePassword = getApiUrl("/users/updatePassword");
 export const CreateGoal = getApiUrl("/goals/create");
+export const GetFood = getApiUrl("/food");

@@ -10,5 +10,6 @@ export default {
     yellow: '#f1d533',
     maincolor: '#68d2c4',
     mainLite: '#b4cfc9',
-    red: "#f5162c"
+    red: "#f5162c",
+    textColor: '#444A54'
 }

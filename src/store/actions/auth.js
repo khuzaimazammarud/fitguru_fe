@@ -1,9 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { LOGIN } from "../../configs/urls";
+import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import setAuthToken from "../../utils/authToken";
-import { ShowError } from "../../utils/flashMessages";
 import jwtDecode from "jwt-decode";
+
+import { LOGIN } from "../../configs/urls";
 import { SET_CURRENT_USER } from "../types";
+import { ShowError } from "../../utils/flashMessages";
 
 export const Init = () => async dispatch => {
     const token = await AsyncStorage.getItem('jwt-token');
@@ -18,12 +20,10 @@ export const Singin = userData => async dispatch => {
 
     try {
         const response = await axios.post(LOGIN, userData);
-        console.log("🚀 ~ file: auth.js:21 ~ Singin ~ userData:", userData)
         const token = response.data.token;
         await AsyncStorage.setItem('jwt-token', token);
         setAuthToken(token);
         const decode = jwtDecode(token);
-        await AsyncStorage.setItem('userData', decode);
         dispatch(setCurrentUser(decode));
     } catch (error) {
         ShowError(error.response.data.message);
