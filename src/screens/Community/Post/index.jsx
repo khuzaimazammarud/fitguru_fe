@@ -1,22 +1,28 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import color from "../../../styles/color";
 import { moderateScale, verticalScale, scale } from "react-native-size-matters";
 
 import imagePath from "../../../constants/imagePath";
 import Icon, { Icons } from "../../../component/Icons";
 import Header from "../../../component/HomeComponent/Header";
+import color from "../../../styles/color";
+import TextInputField from "../../../component/TextInputField"
+import SettingModal from "../../../component/SettingModal";
 
 const Post = ({navigation}) => {
   const [like, setLike] = useState(0);
+  const [open, setOpen] = useState(false);
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation}/>
+      <Header navigation={navigation} setOpen={setOpen} flag={1}/>
+      <TextInputField placeholder={'Search'} icon_name={'search'}/>
+      <ScrollView>
       <View style={styles.card}>
         <View style={styles.userInfo}>
-          <Image source={imagePath.userProfile} style={styles.userImage} />
+          <Image source={imagePath.placeHolder} style={styles.userImage} />
           <View style={styles.userInfoText}>
             <Text style={styles.text}>khuzema</Text>
             <Text style={styles.textLite}>4min ago</Text>
@@ -58,6 +64,96 @@ const Post = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.card}>
+        <View style={styles.userInfo}>
+          <Image source={imagePath.placeHolder} style={styles.userImage} />
+          <View style={styles.userInfoText}>
+            <Text style={styles.text}>khuzema</Text>
+            <Text style={styles.textLite}>4min ago</Text>
+          </View>
+        </View>
+        <Text style={styles.postText}>
+          Hello guys I have issue regarding my fitness I would like if you all
+          give me great around of applause
+        </Text>
+        <Image source={imagePath.userPost} style={styles.userPost} />
+        <View style={styles.interactionWrapper}>
+          <TouchableOpacity
+            style={styles.interaction}
+            onPress={() => (like === 0 ? setLike(1) : setLike(0))}
+          >
+            <Icon
+              type={Icons.MaterialCommunityIcons}
+              name={like === 1 ? "heart" : "heart-outline"}
+              color={like === 0 ? color.black : color.maincolor}
+              size={30}
+            />
+            <Text
+              style={[
+                styles.interactionText,
+                like === 1 ? styles.interactionTextLiked : null,
+              ]}
+            >
+              {like === 1 ? "14 Likes" : "Like"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.interaction}>
+            <Icon
+              type={Icons.MaterialCommunityIcons}
+              name="comment-outline"
+              color={color.black}
+              size={30}
+            />
+            <Text style={styles.interactionText}>Comment</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.card}>
+        <View style={styles.userInfo}>
+          <Image source={imagePath.placeHolder} style={styles.userImage} />
+          <View style={styles.userInfoText}>
+            <Text style={styles.text}>khuzema</Text>
+            <Text style={styles.textLite}>4min ago</Text>
+          </View>
+        </View>
+        <Text style={styles.postText}>
+          Hello guys I have issue regarding my fitness I would like if you all
+          give me great around of applause
+        </Text>
+        {/* <Image source={imagePath.userPost} style={styles.userPost} /> */}
+        <View style={styles.interactionWrapper}>
+          <TouchableOpacity
+            style={styles.interaction}
+            onPress={() => (like === 0 ? setLike(1) : setLike(0))}
+          >
+            <Icon
+              type={Icons.MaterialCommunityIcons}
+              name={like === 1 ? "heart" : "heart-outline"}
+              color={like === 0 ? color.black : color.maincolor}
+              size={30}
+            />
+            <Text
+              style={[
+                styles.interactionText,
+                like === 1 ? styles.interactionTextLiked : null,
+              ]}
+            >
+              {like === 1 ? "14 Likes" : "Like"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.interaction}>
+            <Icon
+              type={Icons.MaterialCommunityIcons}
+              name="comment-outline"
+              color={color.black}
+              size={30}
+            />
+            <Text style={styles.interactionText}>Comment</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      </ScrollView>
+      {open ? <SettingModal open={true} setOpen={setOpen}/> : null}
     </SafeAreaView>
   );
 };
