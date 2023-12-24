@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
   StyleSheet,
   Text,
@@ -7,49 +8,78 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Modal,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-const imageData = [
-  {
-    id: 1,
-    uri: require("../../assets/images/avatar1.png"),
-    caption: "Beautiful Sunset",
-    likes: 150,
-    comments: 25,
-  },
-  {
-    id: 2,
-    uri: require("../../assets/images/avatar2.png"),
-    caption: "Adorable Kittens",
-    likes: 200,
-    comments: 30,
-  },
-  // Add more images as needed
-];
+const Tab = createMaterialTopTabNavigator();
 
-export default function UserProfile() {
+const UserProfile = () => {
   const [isImageFullScreen, setIsImageFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const imageData = [
+    {
+      id: 1,
+      uri: require("../../assets/images/avatar1.png"),
+      caption: "Beautiful Sunset",
+      likes: 150,
+    },
+    {
+      id: 2,
+      uri: require("../../assets/images/avatar2.png"),
+      caption: "Adorable Kittens",
+      likes: 200,
+    },
+    {
+      id: 3,
+      uri: require("../../assets/images/avatar3.png"),
+      caption: "Adorable Kittens",
+      likes: 200,
+    },
+    // Add more images as needed
+  ];
+
+  const favoritesImageData = [
+    {
+      id: 1,
+      uri: require("../../assets/images/avatar4.png"),
+      caption: "Beautiful Sunset",
+      likes: 150,
+    },
+    {
+      id: 2,
+      uri: require("../../assets/images/model.png"),
+      caption: "Beautiful Sunset",
+      likes: 150,
+    },
+  ];
 
   const renderImageItem = ({ item }) => (
     <TouchableOpacity
       style={styles.mediaImageContainer}
       onPress={() => {
         setSelectedImage(item.uri);
+        setSelectedItem(item);
         setIsImageFullScreen(true);
       }}
     >
       <Image source={item.uri} style={styles.image} resizeMode="cover" />
-      <View style={styles.mediaCount}>
-        <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
-          {item.likes} Likes
-        </Text>
-        <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
-          {item.comments} Comments
-        </Text>
-      </View>
+    </TouchableOpacity>
+  );
+
+  const renderFavoriteImageItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.mediaImageContainer}
+      onPress={() => {
+        setSelectedImage(item.uri);
+        setSelectedItem(item);
+        setIsImageFullScreen(true);
+      }}
+    >
+      <Image source={item.uri} style={styles.image} resizeMode="cover" />
     </TouchableOpacity>
   );
 
@@ -57,7 +87,7 @@ export default function UserProfile() {
     <SafeAreaView style={styles.container}>
       <View style={styles.titleBar}>
         <Ionicons name="ios-arrow-back" size={24} color="#52575D" />
-        <Ionicons name="md-more" size={24} color="#52575D" />
+        <Ionicons size={24} color="#52575D" />
       </View>
 
       <View style={{ alignSelf: "center" }}>
@@ -68,17 +98,10 @@ export default function UserProfile() {
             resizeMode="cover"
           />
         </View>
-        <View style={styles.dm}>
-          <MaterialIcons name="chat" size={18} color="#DFD8C8" />
-        </View>
+
         <View style={styles.active}></View>
         <View style={styles.add}>
-          <Ionicons
-            name="ios-add"
-            size={48}
-            color="#DFD8C8"
-            style={{ marginTop: 6, marginLeft: 2 }}
-          ></Ionicons>
+          <Ionicons name="ios-settings" size={30} color="#DFD8C8"></Ionicons>
         </View>
       </View>
 
@@ -108,22 +131,40 @@ export default function UserProfile() {
             },
           ]}
         >
-          <Text style={[styles.text, { fontSize: 24 }]}>45,844</Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>1.3M</Text>
           <Text style={[styles.text, styles.subText]}>Followers</Text>
         </View>
         <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>007K</Text>
           <Text style={[styles.text, styles.subText]}>Following</Text>
         </View>
       </View>
 
-      <FlatList
-        data={imageData}
-        renderItem={renderImageItem}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={3}
-        contentContainerStyle={{ marginTop: 16 }}
-      />
+      <Tab.Navigator>
+        <Tab.Screen name="Photos Grid">
+          {() => (
+            <FlatList
+              data={imageData}
+              renderItem={renderImageItem}
+              keyExtractor={(item) => item.id.toString()}
+              numColumns={3}
+              contentContainerStyle={{ marginTop: 16 }}
+            />
+          )}
+        </Tab.Screen>
+
+        <Tab.Screen name="Favorites Grid">
+          {() => (
+            <FlatList
+              data={favoritesImageData}
+              renderItem={renderFavoriteImageItem}
+              keyExtractor={(item) => item.id.toString()}
+              numColumns={3}
+              contentContainerStyle={{ marginTop: 16 }}
+            />
+          )}
+        </Tab.Screen>
+      </Tab.Navigator>
 
       <Modal
         animationType="slide"
@@ -132,32 +173,51 @@ export default function UserProfile() {
         onRequestClose={() => {
           setIsImageFullScreen(false);
           setSelectedImage(null);
+          setSelectedItem(null);
         }}
       >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <TouchableOpacity
-            style={{ position: "absolute", top: 20, right: 20 }}
+        <View style={{ flex: 1 }}>
+          <TouchableWithoutFeedback
             onPress={() => {
               setIsImageFullScreen(false);
               setSelectedImage(null);
+              setSelectedItem(null);
             }}
           >
-            <Ionicons name="ios-close" size={40} color="#FFF" />
-          </TouchableOpacity>
-          {selectedImage && (
-            <Image
-              source={selectedImage}
-              style={{ flex: 1, width: "100%" }}
-              resizeMode="contain"
-            />
+            <View
+              style={{ position: "absolute", top: 20, right: 20, zIndex: 999 }}
+            >
+              <Ionicons name="ios-close" size={40} color="#000" />
+            </View>
+          </TouchableWithoutFeedback>
+
+          {selectedImage && selectedItem && (
+            <View style={{ flex: 1 }}>
+              <Image
+                source={selectedImage}
+                style={{ flex: 1, width: "100%" }}
+                resizeMode="contain"
+              />
+
+              <View style={styles.mediaCount}>
+                <Text
+                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
+                >
+                  {selectedItem.likes} Likes
+                </Text>
+                <Text
+                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
+                >
+                  {selectedItem.comments} Comments
+                </Text>
+              </View>
+            </View>
           )}
         </View>
       </Modal>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -261,3 +321,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
 });
+
+export default UserProfile;

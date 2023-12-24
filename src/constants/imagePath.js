@@ -1,5 +1,6 @@
 export default {
 
+
     logo: require("../assets/images/fit.png"),
     forgotavatar: require("../assets/images/forgotAvatar.png"),
     otpAvatar: require("../assets/images/otpAvatar.png"),
@@ -9,4 +10,5 @@ export default {
     placeHolder: require("../assets/images/placeholder.jpg"),
     banner2: require("../assets/images/foodbg.jpg")
 }
+
 
