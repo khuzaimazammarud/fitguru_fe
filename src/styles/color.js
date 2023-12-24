@@ -11,5 +11,6 @@ export default {
     maincolor: '#68d2c4',
     mainLite: '#b4cfc9',
     red: "#f5162c",
-    textColor: '#444A54'
+    textColor: '#444A54',
+    dark: '#262626' 
 }

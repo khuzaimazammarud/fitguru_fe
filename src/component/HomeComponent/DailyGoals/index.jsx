@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,16 +6,23 @@ import {
   Image,
   ImageBackground,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as Progress from "react-native-progress";
+import imagePath from "../../../constants/imagePath";
+
+import EditMealModal from '../../EditMealModal';
 
 const banner = require("../../../assets/images/bg2.jpg");
 const walk = require("../../../assets/images/walk.png");
 const yoga = require("../../../assets/images/yoga.png");
 const cycle = require("../../../assets/images/cycle.png");
 
-const DailyGoals = () => {
+const DailyGoals = ({ navigation }) => {
+
+  const [open, setOpen] = useState(false)
+  
   const [fontsLoaded] = useFonts({
     MontserratBlack: require("../../../../assets/Montserrat-Black.ttf"),
     MontserratBold: require("../../../../assets/Montserrat-Bold.ttf"),
@@ -26,24 +33,33 @@ const DailyGoals = () => {
   if (!fontsLoaded) {
     return undefined;
   }
+
   return (
     <>
-      <Banner />
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Analytics')}
+      >
+        <Banner text={'DAILY GOALS'} image={banner} />
+      </TouchableOpacity>
       <View style={{ marginHorizontal: "3%" }}>
         <Label>Your Activities</Label>
         <View style={{ flexDirection: "row" }}>
-          <ScrollView horizontal>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {data.map((item, index) => (
-              <Card data={item} index={index} />
+              <Card key={index} data={item} index={index} />
             ))}
           </ScrollView>
         </View>
+        <TouchableOpacity
+          onPress={() => setOpen(true)} 
+        >
+          <Banner text={'VIEW MEAL'} image={imagePath.banner2} />
+        </TouchableOpacity>
+        {open ? <EditMealModal open={true} setOpen={setOpen} /> : null}
       </View>
     </>
   );
 };
-
-export default DailyGoals;
 
 const Card = ({ data, index }) => {
   return (
@@ -111,13 +127,11 @@ const Card = ({ data, index }) => {
   );
 };
 
-const Banner = () => (
+const Banner = ({ text, image }) => (
   <>
-    <ImageBackground style={styles.banner} source={banner}>
-      {/* <View style={styles.banner}> */}
+    <ImageBackground style={styles.banner} source={image}>
       <View style={styles.bannerContainer}>
-        <Text style={styles.offerText}>DAILY GOALS</Text>
-        {/* </View> */}
+        <Text style={styles.offerText}>{text}</Text>
       </View>
     </ImageBackground>
   </>
@@ -172,4 +186,22 @@ const data = [
     color: "#e7e3ff",
     darkColor: "#8860a2",
   },
+  {
+    name: "Yoga",
+    status: 85,
+    image: yoga,
+    lightColor: "#dad5fe",
+    color: "#e7e3ff",
+    darkColor: "#8860a2",
+  },
+  {
+    name: "Yoga",
+    status: 85,
+    image: yoga,
+    lightColor: "#dad5fe",
+    color: "#e7e3ff",
+    darkColor: "#8860a2",
+  },
 ];
+
+export default DailyGoals;

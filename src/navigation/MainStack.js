@@ -9,11 +9,10 @@ import * as Animatable from "react-native-animatable";
 //screens
 import Home from "../screens/Home";
 import Post from "../screens/Community/Post";
-
 import Reels from "../screens/Community/Reels";
 import UserProfile from "../screens/UserProfile/index";
-
 import Food from "../screens/FoodDatabase/Food";
+import Analytics from '../screens/Analytics';
 
 
 //component
@@ -23,6 +22,7 @@ import Icon, { Icons } from "../component/Icons";
 import color from "../styles/color";
 import { useRef } from "react";
 import { useEffect } from "react";
+
 
 
 const TabArr = [
@@ -51,16 +51,16 @@ const TabArr = [
     type: Icons.MaterialCommunityIcons,
     activeIcon: "timeline-plus",
     inActiveIcon: "timeline-plus-outline",
-    component: UserProfile,
+    component: Analytics,
   },
   {
     key: 4,
-    route: "Account",
-    label: "Account",
+    route: "Food",
+    label: "Food",
     type: Icons.FontAwesome,
     activeIcon: "user-circle",
     inActiveIcon: "user-circle-o",
-    component: Reels,
+    component: Food,
   },
 ];
 

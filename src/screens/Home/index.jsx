@@ -25,8 +25,8 @@ const Home = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.screen}>
                 <Header navigation={navigation}/>
-                <DailyGoals />
-                <FeaturedVideos />
+                <DailyGoals navigation={navigation}/>
+                {/* <FeaturedVideos /> */}
             </View>
         </SafeAreaView>
     );
