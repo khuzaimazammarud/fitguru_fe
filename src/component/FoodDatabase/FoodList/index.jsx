@@ -1,12 +1,10 @@
 import {useState} from 'react'
 import { View, StyleSheet, TextInput, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { verticalScale, moderateScale } from "react-native-size-matters";
+
 import color from '../../../styles/color';
 import imagePath from '../../../constants/imagePath';
 import Icon, { Icons } from '../../Icons';
-
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import color from '../../styles/color';
 
 const FoodList = ({food, navigation}) => {
     

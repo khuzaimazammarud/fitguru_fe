@@ -23,16 +23,15 @@ const headerImage = require("../../../assets/images/header.jpg");
 
 // export default NameBar;
 
-const Header = ({ navigation }) => {
+const Header = ({ navigation, setOpen, flag}) => {
 
   const auth = useSelector(state => state.AuthReducer);
 
   return (
     <View style={styles.header}>
-      {console.log(auth.userData)}
       <BackButton navigation={navigation} />
       <HeaderTitle name={auth.userData.name} />
-      <ImageContainer image={headerImage} navigation={navigation}/>
+      <ImageContainer image={headerImage} navigation={navigation} setOpen={setOpen} flag={flag}/>
     </View>
   )
 };
@@ -49,10 +48,12 @@ const BackButton = ({ navigation }) => (
   </TouchableOpacity>
 );
 
-const ImageContainer = ({ image, height = "100%", width = "100%", navigation }) => (
+const ImageContainer = ({ image, height = "100%", width = "100%", navigation, flag, setOpen }) => (
   <TouchableOpacity 
     style={styles.imageContainer}
-    onPress={() => navigation.navigate('Account')} 
+    onPress={() =>{ 
+      flag === 1 ? setOpen(true):navigation.navigate('Account')
+    }} 
   >
     <Image source={image} style={[{ height, width }]} />
   </TouchableOpacity>

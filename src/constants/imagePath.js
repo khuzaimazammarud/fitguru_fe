@@ -6,6 +6,7 @@ export default {
     changePasswordAvatar: require("../assets/images/changePasswordAvator.png"),
     userPost: require("../assets/images/post3.jpg"),
     userpost2: require("../assets/images/post2.png"),
-    placeHolder: require("../assets/images/placeholder.jpg")
+    placeHolder: require("../assets/images/placeholder.jpg"),
+    banner2: require("../assets/images/foodbg.jpg")
 }
 
