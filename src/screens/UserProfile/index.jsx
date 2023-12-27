@@ -11,15 +11,19 @@ import {
   Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Header from '../../component/HomeComponent/Header'
 import { Ionicons } from "@expo/vector-icons";
+
+import { moderateScale } from 'react-native-size-matters'
+import Header from '../../component/HomeComponent/Header'
+import SettingModal from "../../component/SettingModal";
 
 const Tab = createMaterialTopTabNavigator();
 
-const UserProfile = ({navigation}) => {
+const UserProfile = ({ navigation }) => {
   const [isImageFullScreen, setIsImageFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const imageData = [
     {
@@ -86,7 +90,9 @@ const UserProfile = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation}/>
+      <View style = {{padding: moderateScale(15),}}>
+        <Header navigation={navigation} screen={'Account'} setOpen={setOpen}/>
+      </View>
       <View style={{ alignSelf: "center" }}>
         <View style={styles.profileImage}>
           <Image
@@ -212,6 +218,7 @@ const UserProfile = ({navigation}) => {
           )}
         </View>
       </Modal>
+      {open ? <SettingModal open={true} setOpen={setOpen}/> : null}
     </SafeAreaView>
   );
 };

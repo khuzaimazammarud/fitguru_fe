@@ -23,15 +23,22 @@ const headerImage = require("../../../assets/images/header.jpg");
 
 // export default NameBar;
 
-const Header = ({ navigation, setOpen, flag}) => {
+const Header = ({ navigation, setOpen, screen}) => {
 
   const auth = useSelector(state => state.AuthReducer);
 
   return (
     <View style={styles.header}>
-      <BackButton navigation={navigation} />
+      {screen === 'Home' ? null:<BackButton navigation={navigation} />}
       <HeaderTitle name={auth.userData.name} />
-      <ImageContainer image={headerImage} navigation={navigation} setOpen={setOpen} flag={flag}/>
+      {screen === 'Account' ? (
+        <TouchableOpacity 
+          onPress={() => {setOpen(true)}}
+        > 
+          <Icon name={'ellipsis-v'}type={Icons.FontAwesome} color={color.orange}/>
+        </TouchableOpacity>
+      ) : 
+      <ImageContainer image={headerImage} navigation={navigation}/>}
     </View>
   )
 };
@@ -48,12 +55,10 @@ const BackButton = ({ navigation }) => (
   </TouchableOpacity>
 );
 
-const ImageContainer = ({ image, height = "100%", width = "100%", navigation, flag, setOpen }) => (
+const ImageContainer = ({ image, height = "100%", width = "100%", navigation}) => (
   <TouchableOpacity 
     style={styles.imageContainer}
-    onPress={() =>{ 
-      flag === 1 ? setOpen(true):navigation.navigate('Account')
-    }} 
+    onPress={() => navigation.navigate('Account')} 
   >
     <Image source={image} style={[{ height, width }]} />
   </TouchableOpacity>

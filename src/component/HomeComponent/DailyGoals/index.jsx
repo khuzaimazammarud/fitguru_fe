@@ -127,15 +127,15 @@ const Card = ({ data, index }) => {
   );
 };
 
-const Banner = ({ text, image }) => (
-  <>
+export function Banner({ text, image }){
+  return(
     <ImageBackground style={styles.banner} source={image}>
       <View style={styles.bannerContainer}>
         <Text style={styles.offerText}>{text}</Text>
       </View>
     </ImageBackground>
-  </>
-);
+  )
+};
 
 const Label = ({ children }) => <Text style={styles.label}>{children}</Text>;
 

@@ -1,12 +1,22 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Modal, Text, View } from 'react-native';
+import { useDispatch } from "react-redux";
 import { moderateScale, verticalScale } from 'react-native-size-matters'
+
+import { Signout } from '../../store/actions/auth';
 import color from '../../styles/color';
 import Icon, { Icons } from '../Icons';
 
 const transparent = 'rgba(0,0,0,0)';
 
 const SettingModal = ({ open, setOpen }) => {
+
+    const dispatch = useDispatch();
+
+    const onLogout = () => {
+        dispatch(Signout());
+    };
+
     return (
         <Modal visible={open} animationType='slide' transparent={true}>
             <View
@@ -42,6 +52,14 @@ const SettingModal = ({ open, setOpen }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'image'} size={25} color={color.white} />
                             <Text style={styles.text}>Edit profile image</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={onLogout} 
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Icon type={Icons.FontAwesome} name={'sign-out'} size={25} color={color.white} />
+                            <Text style={styles.text}>Logout</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

@@ -8,16 +8,13 @@ import Icon, { Icons } from "../../../component/Icons";
 import Header from "../../../component/HomeComponent/Header";
 import color from "../../../styles/color";
 import TextInputField from "../../../component/TextInputField"
-import SettingModal from "../../../component/SettingModal";
 
 const Post = ({navigation}) => {
   const [like, setLike] = useState(0);
-  const [open, setOpen] = useState(false);
-
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} setOpen={setOpen} flag={1}/>
+      <Header navigation={navigation}/>
       <TextInputField placeholder={'Search'} icon_name={'search'}/>
       <ScrollView>
       <View style={styles.card}>
@@ -153,7 +150,6 @@ const Post = ({navigation}) => {
         </View>
       </View>
       </ScrollView>
-      {open ? <SettingModal open={true} setOpen={setOpen}/> : null}
     </SafeAreaView>
   );
 };
