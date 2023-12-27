@@ -218,7 +218,7 @@ const UserProfile = ({ navigation }) => {
           )}
         </View>
       </Modal>
-      {open ? <SettingModal open={true} setOpen={setOpen}/> : null}
+      {open ? <SettingModal open={true} setOpen={setOpen} navigation={navigation}/> : null}
     </SafeAreaView>
   );
 };
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
   text: {
-    fontFamily: "HelveticaNeue",
+    // fontFamily: "HelveticaNeue",
     color: "#52575D",
   },
   image: {

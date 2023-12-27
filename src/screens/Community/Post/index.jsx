@@ -16,7 +16,7 @@ const Post = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation}/>
+      <Header navigation={navigation} screen={'post'}/>
       <TextInputField placeholder={'Search'} icon_name={'search'}/>
       <ScrollView>
       <View style={styles.card}>

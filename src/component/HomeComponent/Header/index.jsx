@@ -34,11 +34,17 @@ const Header = ({ navigation, setOpen, screen}) => {
       {screen === 'Account' ? (
         <TouchableOpacity 
           onPress={() => {setOpen(true)}}
+          style = {{padding: 5}}
         > 
           <Icon name={'ellipsis-v'}type={Icons.FontAwesome} color={color.orange}/>
         </TouchableOpacity>
-      ) : 
-      <ImageContainer image={headerImage} navigation={navigation}/>}
+      ) : screen === 'post' ? (
+        <TouchableOpacity 
+          onPress={() =>  navigation.navigate('AddPost')}
+        > 
+          <Icon name={'plus'}type={Icons.FontAwesome} color={color.orange}/>
+        </TouchableOpacity>
+      ): <ImageContainer image={headerImage} navigation={navigation}/>}
     </View>
   )
 };
@@ -58,7 +64,7 @@ const BackButton = ({ navigation }) => (
 const ImageContainer = ({ image, height = "100%", width = "100%", navigation}) => (
   <TouchableOpacity 
     style={styles.imageContainer}
-    onPress={() => navigation.navigate('Account')} 
+    onPress={() => navigation.navigate('account')} 
   >
     <Image source={image} style={[{ height, width }]} />
   </TouchableOpacity>

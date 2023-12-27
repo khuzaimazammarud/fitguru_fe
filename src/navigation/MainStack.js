@@ -10,7 +10,7 @@ import * as Animatable from "react-native-animatable";
 import Home from "../screens/Home";
 import Post from "../screens/Community/Post";
 import Reels from "../screens/Community/Reels";
-import UserProfile from "../screens/UserProfile/index";
+import UserProfile from "../screens/UserProfile";
 import Food from "../screens/FoodDatabase/Food";
 import Analytics from "../screens/Analytics";
 
@@ -21,7 +21,6 @@ import Icon, { Icons } from "../component/Icons";
 import color from "../styles/color";
 import { useRef } from "react";
 import { useEffect } from "react";
-import WaterTracking from "../screens/WaterTracking";
 
 const TabArr = [
   {
@@ -59,6 +58,15 @@ const TabArr = [
     activeIcon: "cutlery",
     inActiveIcon: "cutlery",
     component: Food,
+  },
+  {
+    key: 5,
+    route: "account",
+    label: "account",
+    type: Icons.FontAwesome,
+    activeIcon: "user",
+    inActiveIcon: "user",
+    component: UserProfile,
   },
 ];
 

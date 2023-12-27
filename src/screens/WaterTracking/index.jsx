@@ -3,10 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   Animated,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import ConfettiCannon from "react-native-confetti-cannon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    padding: 15
   },
   buttonContainer: {
     alignItems: "center",

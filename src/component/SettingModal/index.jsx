@@ -9,7 +9,7 @@ import Icon, { Icons } from '../Icons';
 
 const transparent = 'rgba(0,0,0,0)';
 
-const SettingModal = ({ open, setOpen }) => {
+const SettingModal = ({ open, setOpen, navigation }) => {
 
     const dispatch = useDispatch();
 
@@ -30,6 +30,17 @@ const SettingModal = ({ open, setOpen }) => {
                     >
                         <Icon type={Icons.FontAwesome} name={'close'} size={25} color={color.white} />
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('AddPost')
+                            setOpen(false)
+                        }}
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Icon type={Icons.FontAwesome} name={'plus'} size={25} color={color.white} />
+                            <Text style={styles.text}>Add Post</Text>
+                        </View>
+                    </TouchableOpacity>
                     <TouchableOpacity>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'gear'} size={25} color={color.white} />
@@ -42,7 +53,12 @@ const SettingModal = ({ open, setOpen }) => {
                             <Text style={styles.text}>Edit Details</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('SendEmail')
+                            setOpen(false)
+                        }}
+                    >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'lock'} size={25} color={color.white} />
                             <Text style={styles.text}>Update password</Text>
@@ -55,7 +71,7 @@ const SettingModal = ({ open, setOpen }) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={onLogout} 
+                        onPress={onLogout}
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'sign-out'} size={25} color={color.white} />
