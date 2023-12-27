@@ -4,18 +4,19 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Modal,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from '../../component/HomeComponent/Header'
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createMaterialTopTabNavigator();
 
-const UserProfile = () => {
+const UserProfile = ({navigation}) => {
   const [isImageFullScreen, setIsImageFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -85,11 +86,7 @@ const UserProfile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.titleBar}>
-        <Ionicons name="ios-arrow-back" size={24} color="#52575D" />
-        <Ionicons size={24} color="#52575D" />
-      </View>
-
+      <Header navigation={navigation}/>
       <View style={{ alignSelf: "center" }}>
         <View style={styles.profileImage}>
           <Image

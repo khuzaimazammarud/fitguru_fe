@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import axios from "axios";
 import { CreateGoal } from "../../configs/urls";
 import { ShowSuccess } from "../../utils/flashMessages";
@@ -23,11 +23,13 @@ const Home = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.screen}>
                 <Header navigation={navigation}/>
                 <DailyGoals navigation={navigation}/>
-                {/* <FeaturedVideos /> */}
+                <FeaturedVideos/>
             </View>
+        </ScrollView>
         </SafeAreaView>
     );
 };
