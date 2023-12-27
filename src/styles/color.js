@@ -12,5 +12,8 @@ export default {
     mainLite: '#b4cfc9',
     red: "#f5162c",
     textColor: '#444A54',
-    dark: '#262626' 
+    dark: '#262626',
+    lightGrey: '#F0F0F0',
+    darkGrey: '#A9A9A9',
+    darkOrange: '#FF4500',
 }
