@@ -8,9 +8,11 @@ import Icon, { Icons } from "../../../component/Icons";
 import Header from "../../../component/HomeComponent/Header";
 import color from "../../../styles/color";
 import TextInputField from "../../../component/TextInputField"
+import CommentModal from "../../../component/CommentModal";
 
 const Post = ({navigation}) => {
   const [like, setLike] = useState(0);
+  const [open, setOpen] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +52,10 @@ const Post = ({navigation}) => {
               {like === 1 ? "14 Likes" : "Like"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.interaction}>
+          <TouchableOpacity 
+            style={styles.interaction}
+            onPress={() => setOpen(true)}
+          >
             <Icon
               type={Icons.MaterialCommunityIcons}
               name="comment-outline"
@@ -150,6 +155,7 @@ const Post = ({navigation}) => {
         </View>
       </View>
       </ScrollView>
+      {open ? <CommentModal open={true} setOpen={setOpen}/> : null}
     </SafeAreaView>
   );
 };

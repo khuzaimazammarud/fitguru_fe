@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 
 const data = [
   {
-    name: "Cycling",
+    name: "Protien",
     status: 85,
     image: cycle,
     lightColor: "#f8e4d9",
@@ -171,7 +171,7 @@ const data = [
     darkColor: "#fac5a4",
   },
   {
-    name: "Walking",
+    name: "Fat",
     status: 25,
     image: walk,
     lightColor: "#d7f0f7",
@@ -179,7 +179,7 @@ const data = [
     darkColor: "#aceafc",
   },
   {
-    name: "Yoga",
+    name: "Carb",
     status: 85,
     image: yoga,
     lightColor: "#dad5fe",
