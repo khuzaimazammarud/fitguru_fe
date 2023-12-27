@@ -47,7 +47,12 @@ const SettingModal = ({ open, setOpen, navigation }) => {
                             <Text style={styles.text}>Privacy and Setting</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => {
+                            navigation.navigate('EditScreen')
+                            setOpen(false)
+                        }}
+                    >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'pencil'} size={25} color={color.white} />
                             <Text style={styles.text}>Edit Details</Text>

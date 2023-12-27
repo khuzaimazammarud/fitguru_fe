@@ -58,7 +58,7 @@ const TabArr = [
     type: Icons.FontAwesome,
     activeIcon: "cutlery",
     inActiveIcon: "cutlery",
-    component: EditScreen,
+    component: Food,
   },
   {
     key: 5,

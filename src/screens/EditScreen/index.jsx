@@ -6,6 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { moderateScale } from "react-native-size-matters";
 import SubmitButton from "../../component/ButtonSubmit";
 import TextInputField from "../../component/TextInputField";
+import Header from "../../component/HomeComponent/Header";
 
 const GenderRadioButton = ({ label, selected, onSelect }) => {
   return (
@@ -23,7 +24,7 @@ const GenderRadioButton = ({ label, selected, onSelect }) => {
   );
 };
 
-const EditDetails = () => {
+const EditDetails = ({navigation}) => {
   const [data, setData] = React.useState({
     username: "",
     email: "",
@@ -46,8 +47,10 @@ const EditDetails = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header navigation={navigation}/>
       <View style={styles.editContainer}>
         {/* Other TextInputField components... */}
+        <Text style = {{fontSize: moderateScale(24), marginVertical: moderateScale(10), fontWeight: 'bold'}}>Edit Details</Text>
         <TextInputField
           placeholder="Edit your username"
           icon_name="user"
