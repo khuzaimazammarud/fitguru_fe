@@ -13,6 +13,7 @@ import Reels from "../screens/Community/Reels";
 import UserProfile from "../screens/UserProfile";
 import Food from "../screens/FoodDatabase/Food";
 import Analytics from "../screens/Analytics";
+import EditScreen from "../screens/EditScreen";
 
 //component
 import Icon, { Icons } from "../component/Icons";
@@ -57,7 +58,7 @@ const TabArr = [
     type: Icons.FontAwesome,
     activeIcon: "cutlery",
     inActiveIcon: "cutlery",
-    component: Food,
+    component: EditScreen,
   },
   {
     key: 5,
