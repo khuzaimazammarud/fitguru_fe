@@ -1,5 +1,5 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { moderateScale, verticalScale } from "react-native-size-matters";
@@ -12,8 +12,7 @@ import Post from "../screens/Community/Post";
 import Reels from "../screens/Community/Reels";
 import UserProfile from "../screens/UserProfile/index";
 import Food from "../screens/FoodDatabase/Food";
-import Analytics from '../screens/Analytics';
-
+import Analytics from "../screens/Analytics";
 
 //component
 import Icon, { Icons } from "../component/Icons";
@@ -22,8 +21,7 @@ import Icon, { Icons } from "../component/Icons";
 import color from "../styles/color";
 import { useRef } from "react";
 import { useEffect } from "react";
-
-
+import WaterTracking from "../screens/WaterTracking";
 
 const TabArr = [
   {
@@ -60,7 +58,7 @@ const TabArr = [
     type: Icons.FontAwesome,
     activeIcon: "user-circle",
     inActiveIcon: "user-circle-o",
-    component: Food,
+    component: Reels,
   },
 ];
 

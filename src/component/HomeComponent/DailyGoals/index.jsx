@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,23 +6,25 @@ import {
   Image,
   ImageBackground,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as Progress from "react-native-progress";
 import imagePath from "../../../constants/imagePath";
 
-import EditMealModal from '../../EditMealModal';
+import EditMealModal from "../../EditMealModal";
 
 const banner = require("../../../assets/images/bg2.jpg");
+const banner2 = require("../../../assets/images/bg3.jpg");
+
 const walk = require("../../../assets/images/walk.png");
 const yoga = require("../../../assets/images/yoga.png");
 const cycle = require("../../../assets/images/cycle.png");
+const water = require("../../../assets/images/water.png");
 
-const DailyGoals = ({ navigation }) => {
+const Analytics = ({ navigation }) => {
+  const [open, setOpen] = useState(false);
 
-  const [open, setOpen] = useState(false)
-  
   const [fontsLoaded] = useFonts({
     MontserratBlack: require("../../../../assets/Montserrat-Black.ttf"),
     MontserratBold: require("../../../../assets/Montserrat-Bold.ttf"),
@@ -36,13 +38,11 @@ const DailyGoals = ({ navigation }) => {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Analytics')}
-      >
-        <Banner text={'DAILY GOALS'} image={banner} />
+      <TouchableOpacity onPress={() => navigation.navigate("Analytics")}>
+        <Banner text={"ANALYTICS"} image={banner} />
       </TouchableOpacity>
       <View style={{ marginHorizontal: "3%" }}>
-        <Label>Your Activities</Label>
+        <Label>Daily Goals</Label>
         <View style={{ flexDirection: "row" }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {data.map((item, index) => (
@@ -50,23 +50,26 @@ const DailyGoals = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        <TouchableOpacity
-          onPress={() => setOpen(true)} 
-        >
-          <Banner text={'VIEW MEAL'} image={imagePath.banner2} />
+        <TouchableOpacity onPress={() => setOpen(true)}>
+          <Banner text={"VIEW MEAL"} image={imagePath.banner2} />
         </TouchableOpacity>
         {open ? <EditMealModal open={true} setOpen={setOpen} /> : null}
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate("WaterTracking")}>
+        <Banner text={"WATER INTAKE"} image={banner2} />
+      </TouchableOpacity>
     </>
   );
 };
 
 const Card = ({ data, index }) => {
+  const cardHeight = index % 2 === 0 ? 180 : 150;
+
   return (
     <View
       style={{
         flex: 1,
-        height: index === 1 ? 180 : 150,
+        height: cardHeight,
         padding: 10,
         alignSelf: "center",
         backgroundColor: data.color,
@@ -127,15 +130,15 @@ const Card = ({ data, index }) => {
   );
 };
 
-export function Banner({ text, image }){
-  return(
+export function Banner({ text, image }) {
+  return (
     <ImageBackground style={styles.banner} source={image}>
       <View style={styles.bannerContainer}>
         <Text style={styles.offerText}>{text}</Text>
       </View>
     </ImageBackground>
-  )
-};
+  );
+}
 
 const Label = ({ children }) => <Text style={styles.label}>{children}</Text>;
 
@@ -176,7 +179,7 @@ const data = [
     image: walk,
     lightColor: "#d7f0f7",
     color: "#e8f7fc",
-    darkColor: "#aceafc",
+    darkColor: "#4CB9E7",
   },
   {
     name: "Yoga",
@@ -187,21 +190,13 @@ const data = [
     darkColor: "#8860a2",
   },
   {
-    name: "Yoga",
-    status: 85,
-    image: yoga,
-    lightColor: "#dad5fe",
-    color: "#e7e3ff",
-    darkColor: "#8860a2",
-  },
-  {
-    name: "Yoga",
-    status: 85,
-    image: yoga,
-    lightColor: "#dad5fe",
-    color: "#e7e3ff",
-    darkColor: "#8860a2",
+    name: "Hydration",
+    status: 65,
+    image: water,
+    lightColor: "#B4D4FF",
+    color: "#B4D4FF",
+    darkColor: "#176B87",
   },
 ];
 
-export default DailyGoals;
+export default Analytics;
