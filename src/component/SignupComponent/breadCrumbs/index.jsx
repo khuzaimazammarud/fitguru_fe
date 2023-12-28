@@ -14,6 +14,9 @@ const tabs = [
     {
         text: 'Goal'
     },
+    {
+        text: 'Map'
+    },
 ]
 
 function BreadCrumbs({setSteps, steps}) {

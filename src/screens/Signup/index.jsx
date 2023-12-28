@@ -12,6 +12,7 @@ import Info from '../../component/SignupComponent/info';
 import Gender from '../../component/SignupComponent/gender';
 import BodyInfo from '../../component/SignupComponent/bodyInfo';
 import GoalInfo from '../../component/SignupComponent/goal';
+// import MapWithButtons from '../../component/SignupComponent/Map';
 
 
 const Signup = ({ navigation }) => {
@@ -63,6 +64,7 @@ const Signup = ({ navigation }) => {
             {steps === 2 ? <Gender data={data} setData={setData} setSteps={setSteps} /> : null}
             {steps === 3 ? <BodyInfo data={data} setData={setData} setSteps={setSteps} /> : null}
             {steps === 4 ? <GoalInfo onSignup={onSignup} /> : null}
+            {/* {steps === 5 ? <GoalInfo onSignup={MapWithButtons} /> : null} */}
         </SafeAreaView>
     )
 }
