@@ -101,7 +101,7 @@ const CommentModal = ({ open, setOpen }) => {
                 >
                     <TouchableOpacity
                         onPress={() => setOpen(false)}
-                        style={{ marginVertical: moderateScale(5), alignItems: 'center' }}
+                        style={{ marginVertical: moderateScale(5), alignItems: 'center'}}
                     >
                         <Icon type={Icons.FontAwesome} name={'arrow-down'} size={25} color={color.dark} />
                     </TouchableOpacity>
