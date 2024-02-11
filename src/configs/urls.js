@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://192.168.100.204:3001";
+export const API_BASE_URL = "http://192.168.18.37:3001";
 // export const API_BASE_URL = "http://192.168.100.5:3001";
 
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint;
