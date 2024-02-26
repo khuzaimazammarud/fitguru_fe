@@ -11,6 +11,7 @@ import {
   Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from 'react-redux';
 import { Ionicons } from "@expo/vector-icons";
 
 import { moderateScale } from 'react-native-size-matters'
@@ -20,6 +21,7 @@ import SettingModal from "../../component/SettingModal";
 const Tab = createMaterialTopTabNavigator();
 
 const UserProfile = ({ navigation }) => {
+  const auth = useSelector(state => state.AuthReducer);
   const [isImageFullScreen, setIsImageFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -102,15 +104,12 @@ const UserProfile = ({ navigation }) => {
           />
         </View>
 
-        <View style={styles.active}></View>
-        <View style={styles.add}>
-          <Ionicons name="ios-settings" size={30} color="#DFD8C8"></Ionicons>
-        </View>
+        <View style={styles.active} />
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-          James Bond
+          {auth.userData.name}
         </Text>
         <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
           Fitness Geek
