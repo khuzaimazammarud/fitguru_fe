@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import { moderateScale } from 'react-native-size-matters';
+import { CreatePost } from '../../../configs/urls';
+import { ShowError, ShowSuccess } from '../../../utils/flashMessages';
 
 const FabButton = ({ icon, onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.fabButton} activeOpacity={0.7}>
@@ -10,13 +15,29 @@ const FabButton = ({ icon, onPress, title }) => (
     </TouchableOpacity>
 );
 
-const AddPost = () => {
+const AddPost = ({navigation}) => {
+    const auth = useSelector(state => state.AuthReducer);
     const [isOpen, setIsOpen] = useState(false);
+    const [content, setContent] = useState('');
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
+    const addPost = async() => {
+        const dataTosend = {
+            content,
+            authorId: auth.userData.id
+        }
+        try {
+            const response = await axios.post(CreatePost, dataTosend);
+            ShowSuccess(response.data.message);
+            navigation.navigate('account')
+        } catch (error) {
+            ShowError(error.response.data.message);
+        }
+    }
+    
     return (
         <View style={styles.container}>
             <View style={styles.inputWrapper}>
@@ -24,15 +45,18 @@ const AddPost = () => {
                     style={styles.InputField}
                     placeholder="What's on your mind?"
                     multiline
+                    value= {content}
                     numberOfLines={4}
+                    onChangeText={(text) => setContent(text)}
                 />
             </View>
             <View style={styles.fabContainer}>
                 {isOpen && (
                     <>
-                        <FabButton icon="ios-videocam-outline"  onPress={() => console.log('Add video')} />
+                        <FabButton icon="ios-videocam-outline"  onPress={() => console.log('Add video')}/>
                         <FabButton icon="ios-camera-outline"  onPress={() => console.log('Add image')} />
                         <FabButton icon="ios-image-outline"  onPress={() => console.log('Add image')} />
+                        <FabButton icon="add"  onPress={addPost} />
                     </>
                 )}
                 <FabButton icon={isOpen ? "close" : "add"} onPress={toggleMenu} />
