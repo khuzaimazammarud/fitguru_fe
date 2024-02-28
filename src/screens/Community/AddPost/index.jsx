@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { launchImageLibrary, MediaTypeOptions } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -15,37 +17,87 @@ const FabButton = ({ icon, onPress, title }) => (
     </TouchableOpacity>
 );
 
-const AddPost = ({navigation}) => {
+const FormData = global.FormData;
+
+const AddPost = ({ navigation }) => {
     const auth = useSelector(state => state.AuthReducer);
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState('');
+    const [image, setImage] = useState(null);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const addPost = async() => {
-        const dataTosend = {
-            content,
-            authorId: auth.userData.id
+    const selectImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to choose an image.');
+            return;
         }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            allowsEditing: true,
+            aspect: [4, 3]
+        });
+        if (result.canceled) {
+            return;
+        }
+        setImage(result.assets[0].uri );
+    };
+
+
+    const addPost = async () => {
+        if (!content) {
+            return;
+        }
+        const formData = new FormData()
+        formData.append('content', content);
+        formData.append('authorId', auth.userData.id);
+        if (image) {
+            const uriParts = image.split('.');
+            const fileType = uriParts[uriParts.length - 1];
+            formData.append('image', {
+                uri: image,
+                name: `image/${fileType}`,
+                type: `image/${fileType}`
+            });
+        }
+
+        const configs = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            transformRequest: () => {
+                return formData;
+            }
+        }
+        // const dataTosend = {
+        //     content,
+        //     authorId: auth.userData.id
+        // }
         try {
-            const response = await axios.post(CreatePost, dataTosend);
+            const response = await axios.post(CreatePost, formData, configs);
+            // console.log("🚀 ~ addPost ~ response:", response)
+            // const response = await axios.post(CreatePost, dataTosend);
             ShowSuccess(response.data.message);
             navigation.navigate('account')
         } catch (error) {
             ShowError(error.response.data.message);
         }
     }
-    
+
     return (
         <View style={styles.container}>
+            {console.log(image)}
             <View style={styles.inputWrapper}>
                 <TextInput
                     style={styles.InputField}
                     placeholder="What's on your mind?"
                     multiline
-                    value= {content}
+                    value={content}
                     numberOfLines={4}
                     onChangeText={(text) => setContent(text)}
                 />
@@ -53,10 +105,10 @@ const AddPost = ({navigation}) => {
             <View style={styles.fabContainer}>
                 {isOpen && (
                     <>
-                        <FabButton icon="ios-videocam-outline"  onPress={() => console.log('Add video')}/>
-                        <FabButton icon="ios-camera-outline"  onPress={() => console.log('Add image')} />
-                        <FabButton icon="ios-image-outline"  onPress={() => console.log('Add image')} />
-                        <FabButton icon="add"  onPress={addPost} />
+                        <FabButton icon="ios-videocam-outline" onPress={() => console.log('Add video')} />
+                        <FabButton icon="ios-camera-outline" onPress={() => console.log('Add image')} />
+                        <FabButton icon="ios-image-outline" onPress={selectImage} />
+                        <FabButton icon="add" onPress={addPost} />
                     </>
                 )}
                 <FabButton icon={isOpen ? "close" : "add"} onPress={toggleMenu} />
