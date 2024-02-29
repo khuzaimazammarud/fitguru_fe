@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
-import { launchImageLibrary, MediaTypeOptions } from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
+import LottieView from 'lottie-react-native';
 import axios from 'axios';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { CreatePost } from '../../../configs/urls';
 import { ShowError, ShowSuccess } from '../../../utils/flashMessages';
+import animationPath from '../../../constants/animationPath'
+import color from '../../../styles/color';
+
 
 const FabButton = ({ icon, onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.fabButton} activeOpacity={0.7}>
@@ -24,6 +27,7 @@ const AddPost = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
+    const [loader, setLoader] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -40,16 +44,17 @@ const AddPost = ({ navigation }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             quality: 1,
             allowsEditing: true,
-            aspect: [4, 3]
+            aspect: [4, 4]
         });
         if (result.canceled) {
             return;
         }
-        setImage(result.assets[0].uri );
+        setImage(result.assets[0].uri);
     };
 
 
     const addPost = async () => {
+        setLoader(true);
         if (!content) {
             return;
         }
@@ -74,45 +79,79 @@ const AddPost = ({ navigation }) => {
                 return formData;
             }
         }
-        // const dataTosend = {
-        //     content,
-        //     authorId: auth.userData.id
-        // }
+        dataToSend = {
+            text: content
+        }
         try {
+
             const response = await axios.post(CreatePost, formData, configs);
-            // console.log("🚀 ~ addPost ~ response:", response)
-            // const response = await axios.post(CreatePost, dataTosend);
             ShowSuccess(response.data.message);
+            setLoader(false);
             navigation.navigate('account')
         } catch (error) {
+            setLoader(false);
             ShowError(error.response.data.message);
         }
     }
 
     return (
         <View style={styles.container}>
-            {console.log(image)}
-            <View style={styles.inputWrapper}>
-                <TextInput
-                    style={styles.InputField}
-                    placeholder="What's on your mind?"
-                    multiline
-                    value={content}
-                    numberOfLines={4}
-                    onChangeText={(text) => setContent(text)}
-                />
-            </View>
-            <View style={styles.fabContainer}>
-                {isOpen && (
+            {
+                !loader ? (
                     <>
-                        <FabButton icon="ios-videocam-outline" onPress={() => console.log('Add video')} />
-                        <FabButton icon="ios-camera-outline" onPress={() => console.log('Add image')} />
-                        <FabButton icon="ios-image-outline" onPress={selectImage} />
-                        <FabButton icon="add" onPress={addPost} />
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                style={styles.InputField}
+                                placeholder="What's on your mind?"
+                                multiline
+                                value={content}
+                                numberOfLines={4}
+                                onChangeText={(text) => setContent(text)}
+                            />
+                        </View>
+                        <View style={styles.fabContainer}>
+                            {isOpen && (
+                                <>
+                                    <FabButton icon="ios-videocam-outline" onPress={() => console.log('Add video')} />
+                                    <FabButton icon="ios-camera-outline" onPress={() => console.log('Add image')} />
+                                    <FabButton icon="ios-image-outline" onPress={selectImage} />
+                                    <FabButton icon="add" onPress={() => {
+                                        toggleMenu()
+                                        addPost()
+                                    }} />
+                                </>
+                            )}
+                            <FabButton icon={isOpen ? "close" : "add"} onPress={toggleMenu} />
+                        </View>
+                        {
+                            image && (
+                                <View style={styles.uploadImgContainer}>
+                                    <TouchableOpacity
+                                        style={styles.imgCard}
+                                        onPress={() => {
+                                            setImage(null);
+                                        }}
+                                    >
+                                        <Text style={{ color: 'white', alignItems: 'center', flex: 1 }}>Image is Added</Text>
+                                        <Icon name={'close'} size={moderateScale(20)} color="#FFF" />
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }
                     </>
-                )}
-                <FabButton icon={isOpen ? "close" : "add"} onPress={toggleMenu} />
-            </View>
+                ) : (
+                    <>
+                        <View style={styles.imageholder}>
+                            <Text style={styles.desc}>FIT GURU JEE ANALYSING YOUR POST</Text>
+                            <LottieView
+                                style={styles.image}
+                                source={animationPath.ModelLoading}
+                                autoPlay
+                            />
+                        </View>
+                    </>
+                )
+            }
         </View>
     );
 };
@@ -120,7 +159,7 @@ const AddPost = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center', // Fixed typo here, should be alignItems instead of alignItem
+        justifyContent: 'center', // Fixed typo here, should be alignItems instead of alignItem
         backgroundColor: '#f0f0f0', // The background color for the entire screen
     },
     inputWrapper: {
@@ -154,6 +193,32 @@ const styles = StyleSheet.create({
         elevation: 4,
         flexDirection: 'row',
         padding: moderateScale(10), // Padding for the text next to the icon
+    },
+    imgCard: {
+        width: 'auto',
+        height: verticalScale(50),
+        paddingHorizontal: moderateScale(10),
+        paddingVertical: moderateScale(10),
+        backgroundColor: '#ff5722',
+        position: 'absolute', // Positioning it over the screen content
+        // right: moderateScale(10),
+        left: moderateScale(10),
+        bottom: moderateScale(30),
+        borderRadius: moderateScale(10)
+    },
+    imageholder: {
+        flex: 1,
+        marginVertical: verticalScale(15),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    desc: {
+        textAlign: 'center',
+        color: color.black,
+        fontSize: 24,
+        fontWeight: 'bold',
+        paddingHorizontal: moderateScale(40),
+        bottom: verticalScale(60)
     },
     fabText: {
         color: 'white',

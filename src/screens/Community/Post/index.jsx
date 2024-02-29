@@ -18,6 +18,8 @@ const Post = ({ navigation }) => {
   const [like, setLike] = useState(0);
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [postId, setPostId] = useState('');
+  const [search, setSearch] = useState('');
 
   const PostItem = ({ item }) => {
 
@@ -25,7 +27,8 @@ const Post = ({ navigation }) => {
       setLike(like === 0 ? 1 : 0);
     };
 
-    const handleCommentPress = () => {
+    const handleCommentPress = (postId) => {
+      setPostId(postId);
       setOpen(true);
     };
 
@@ -58,10 +61,10 @@ const Post = ({ navigation }) => {
                 like === 1 ? styles.interactionTextLiked : null,
               ]}
             >
-              {like === 1 ? `${item.likes + 1} Likes` : "Like"}
+              {like === 1 ? `${item.likes + 1} Likes` : `${item.likes.length} likes`}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.interaction} onPress={handleCommentPress}>
+          <TouchableOpacity style={styles.interaction} onPress={() => handleCommentPress(item._id)}>
             <Icon
               type={Icons.MaterialCommunityIcons}
               name="comment-outline"
@@ -92,13 +95,18 @@ const Post = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} screen={'post'} />
-      <TextInputField placeholder={'Search'} icon_name={'search'} />
+      <TextInputField 
+        placeholder={'Search'} 
+        icon_name={'search'} 
+        onChangeText={(text) => setSearch(text)}
+      />
         <FlatList
           data={posts}
           renderItem={({ item }) => <PostItem item={item}/>}
           keyExtractor={(item) => item._id}
+          style = {{marginBottom: moderateScale(50)}}
         />
-      {open ? <CommentModal open={true} setOpen={setOpen} /> : null}
+      {open ? <CommentModal open={true} setOpen={setOpen} authorId ={auth.userData.id} postId = {postId}/> : null}
     </SafeAreaView>
   );
 };

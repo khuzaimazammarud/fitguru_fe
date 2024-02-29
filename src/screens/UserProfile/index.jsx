@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
   StyleSheet,
@@ -10,13 +10,15 @@ import {
   TouchableWithoutFeedback,
   Modal,
 } from "react-native";
+import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from 'react-redux';
 import { Ionicons } from "@expo/vector-icons";
 
-import { moderateScale } from 'react-native-size-matters'
+import { moderateScale, moderateVerticalScale } from 'react-native-size-matters'
 import Header from '../../component/HomeComponent/Header'
 import SettingModal from "../../component/SettingModal";
+import { getPostByUser } from "../../configs/urls";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -26,6 +28,7 @@ const UserProfile = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   const imageData = [
     {
@@ -68,12 +71,18 @@ const UserProfile = ({ navigation }) => {
     <TouchableOpacity
       style={styles.mediaImageContainer}
       onPress={() => {
-        setSelectedImage(item.uri);
+        setSelectedImage(item.picture);
         setSelectedItem(item);
         setIsImageFullScreen(true);
       }}
     >
-      <Image source={item.uri} style={styles.image} resizeMode="cover" />
+      {
+        item.picture ? (
+          <Image source={{ uri: item.picture }} style={styles.image} resizeMode="cover" />
+        ) : (
+          <Text style={{ textAlign: 'center', alignItems: 'center' }}>Text Post</Text>
+        )
+      }
     </TouchableOpacity>
   );
 
@@ -85,15 +94,33 @@ const UserProfile = ({ navigation }) => {
         setSelectedItem(item);
         setIsImageFullScreen(true);
       }}
-    >
-      <Image source={item.uri} style={styles.image} resizeMode="cover" />
+    >{
+        item.picture ? (
+          <Image source={item.uri} style={styles.image} resizeMode="cover" />
+        ) : (
+          <Text>Text</Text>
+        )
+      }
     </TouchableOpacity>
   );
 
+  const getPost = async () => {
+    try {
+      const response = await axios.get(`${getPostByUser}/${auth.userData.id}`);
+      setPosts(response.data.posts)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getPost();
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style = {{padding: moderateScale(15),}}>
-        <Header navigation={navigation} screen={'Account'} setOpen={setOpen}/>
+      <View style={{ padding: moderateScale(15), }}>
+        <Header navigation={navigation} screen={'Account'} setOpen={setOpen} />
       </View>
       <View style={{ alignSelf: "center" }}>
         <View style={styles.profileImage}>
@@ -119,7 +146,7 @@ const UserProfile = ({ navigation }) => {
       <View style={styles.statsContainer}>
         <View style={styles.statsBox}>
           <Text style={[styles.text, { fontSize: 24 }]}>
-            {imageData.length}
+            {posts.length}
           </Text>
           <Text style={[styles.text, styles.subText]}>Posts</Text>
         </View>
@@ -146,11 +173,11 @@ const UserProfile = ({ navigation }) => {
         <Tab.Screen name="Photos Grid">
           {() => (
             <FlatList
-              data={imageData}
+              data={posts}
               renderItem={renderImageItem}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => item._id}
               numColumns={3}
-              contentContainerStyle={{ marginTop: 16 }}
+              contentContainerStyle={{ marginTop: 10 }}
             />
           )}
         </Tab.Screen>
@@ -186,38 +213,57 @@ const UserProfile = ({ navigation }) => {
               setSelectedItem(null);
             }}
           >
-            <View
-              style={{ position: "absolute", top: 20, right: 20, zIndex: 999 }}
-            >
+            <View style={{ position: "absolute", top: 20, right: 20, zIndex: 999 }}>
               <Ionicons name="ios-close" size={40} color="#000" />
             </View>
           </TouchableWithoutFeedback>
-
-          {selectedImage && selectedItem && (
+          {selectedItem && (
             <View style={{ flex: 1 }}>
-              <Image
-                source={selectedImage}
-                style={{ flex: 1, width: "100%" }}
-                resizeMode="contain"
-              />
-
-              <View style={styles.mediaCount}>
-                <Text
-                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
-                >
-                  {selectedItem.likes} Likes
+              {
+                selectedImage && (
+                  <Image
+                    source={{ uri: selectedImage }}
+                    style={{ flex: 1, width: "100%" }}
+                    resizeMode="contain"
+                  />
+                )
+              }
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0, // Adjust this value as needed
+                  width: '100%',
+                  padding: 10,
+                }}
+              >
+                <Text style={[styles.text, { color: "black", fontWeight: "bold", top: '300%' }]}>
+                  {selectedItem.content}
                 </Text>
-                <Text
-                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
-                >
-                  {selectedItem.comments} Comments
+              </View>
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: 0, // Adjust this value as needed
+                  width: '100%',
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+                }}
+              >
+                <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
+                  {selectedItem.likes.length} Likes
+                </Text>
+                <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
+                  {selectedItem.comments.length} Comments
                 </Text>
               </View>
             </View>
           )}
         </View>
       </Modal>
-      {open ? <SettingModal open={true} setOpen={setOpen} navigation={navigation}/> : null}
+
+      {open ? <SettingModal open={true} setOpen={setOpen} navigation={navigation} /> : null}
     </SafeAreaView>
   );
 };
@@ -310,11 +356,11 @@ const styles = StyleSheet.create({
   mediaCount: {
     backgroundColor: "#41444B",
     position: "absolute",
-    top: "50%",
+    top: "75%",
     marginTop: -25,
     marginLeft: 6,
-    width: 108,
-    height: 50,
+    width: '100%',
+    height: moderateVerticalScale(200),
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 12,
