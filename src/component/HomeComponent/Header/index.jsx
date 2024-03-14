@@ -7,22 +7,6 @@ import { useSelector } from 'react-redux';
 
 const headerImage = require("../../../assets/images/header.jpg");
 
-// const NameBar = ({ navigation }) => {
-//   // const [fontsLoaded] = useFonts({
-//   //   MontserratBlack: require("../../../../assets/Montserrat-Black.ttf"),
-//   //   MontserratBold: require("../../../../assets/Montserrat-Bold.ttf"),
-//   //   MontserratExtraBold: require("../../../../assets/Montserrat-ExtraBold.ttf"),
-//   //   MontserratSemiBold: require("../../../../assets/Montserrat-SemiBold.ttf"),
-//   //   MontserratRegular: require("../../../../assets/Montserrat-Regular.ttf"),
-//   // });
-//   // if (!fontsLoaded) {
-//   //   return undefined;
-//   // }
-//   return <Header navigation = {navigation} />;
-// };
-
-// export default NameBar;
-
 const Header = ({ navigation, setOpen, screen}) => {
 
   const auth = useSelector(state => state.AuthReducer);
@@ -94,7 +78,7 @@ const styles = StyleSheet.create({
   },
   title: { paddingHorizontal: 10, flex: 1, justifyContent: "center" },
 
-  bigTitle: { fontSize: 16, fontFamily: "MontserratSemiBold" },
+  bigTitle: { fontSize: 16 },
 
   smallTitle: { fontSize: 10, opacity: 0.6 },
 });

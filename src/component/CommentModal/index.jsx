@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, Image, StyleSheet, Modal, Button } from 'react-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters'
+import axios from 'axios';
+
 
 import color from '../../styles/color';
 import Icon, { Icons } from '../Icons';
 import imagePath from '../../constants/imagePath';
+import { ShowError, ShowSuccess } from '../../utils/flashMessages';
+import { CreateComment, GetComments } from '../../configs/urls';
 
 const transparent = 'rgba(0,0,0,0)';
 
@@ -61,35 +65,46 @@ const commentsData = [
 ];
 
 
-const CommentModal = ({ open, setOpen }) => {
+const CommentModal = ({ open, setOpen, authorId, postId }) => {
 
     const [commentText, setCommentText] = useState('');
+    const [data, setData] = useState([]);
 
-    const handleSendComment = () => {
+    const handleSendComment = async () => {
         if (commentText.trim()) {
-            // Handle sending the comment (e.g., update the state or backend)
-            console.log('Comment sent:', commentText);
-            // Clear the input field
+            try {
+                const dataToSend = {
+                    content: commentText,
+                    authorId,
+                    postId
+                }
+                const response = await axios.post(CreateComment, dataToSend);
+                ShowSuccess(response.data.message);
+            } catch (error) {
+                ShowError(error.response.data.message);
+            }
             setCommentText('');
         }
     };
 
+    const getComments = async () => {
+        try {
+            const response = await axios.get(`${GetComments}/${postId}`);
+            console.log("🚀 ~ getComments ~ response:", response.data.comments)
+            setData(response.data.comments);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getComments();
+    },[])
+
     const renderComment = ({ item }) => (
         <View style={styles.commentContainer}>
-            <Text style={styles.username}>{item.username}</Text>
-            <Text style={styles.comment}>{item.comment}</Text>
-            <View style={styles.interactions}>
-                <Text style={styles.likes}>{item.likes} Likes</Text>
-                <TouchableOpacity onPress={() => { }}>
-                    <Text style={styles.reply}>Reply</Text>
-                </TouchableOpacity>
-            </View>
-            {item.replies.map((reply) => (
-                <View key={reply.id} style={styles.replyContainer}>
-                    <Text style={styles.username}>{reply.username}</Text>
-                    <Text style={styles.comment}>{reply.comment}</Text>
-                </View>
-            ))}
+            <Text style={styles.username}>{item.author.username}</Text>
+            <Text style={styles.comment}>{item.content}</Text>
         </View>
     );
     return (
@@ -101,15 +116,15 @@ const CommentModal = ({ open, setOpen }) => {
                 >
                     <TouchableOpacity
                         onPress={() => setOpen(false)}
-                        style={{ marginVertical: moderateScale(5), alignItems: 'center'}}
+                        style={{ marginVertical: moderateScale(5), alignItems: 'center' }}
                     >
                         <Icon type={Icons.FontAwesome} name={'arrow-down'} size={25} color={color.dark} />
                     </TouchableOpacity>
                     <View style={styles.screenContainer}>
                         <FlatList
-                            data={commentsData}
+                            data={data}
                             renderItem={renderComment}
-                            keyExtractor={(item) => item.id}
+                            keyExtractor={(item) => item._id}
                             style={styles.commentsList}
                         />
                         <View style={styles.inputContainer}>
@@ -154,50 +169,50 @@ const styles = StyleSheet.create({
     },
     commentsList: {
         flex: 1,
-      },
-      commentContainer: {
+    },
+    commentContainer: {
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: color.lightGrey,
-      },
-      username: {
+    },
+    username: {
         color: color.darkOrange,
         fontWeight: 'bold',
-      },
-      comment: {
+    },
+    comment: {
         color: color.darkGrey,
-      },
-      interactions: {
+    },
+    interactions: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 4,
-      },
-      likeButton: {
+    },
+    likeButton: {
         flexDirection: 'row',
         alignItems: 'center',
-      },
-      likes: {
+    },
+    likes: {
         color: color.orange,
         marginLeft: 4,
-      },
-      reply: {
+    },
+    reply: {
         color: color.darkOrange,
-      },
-      inputContainer: {
+    },
+    inputContainer: {
         flexDirection: 'row',
         borderTopWidth: 1,
         borderTopColor: color.lightGrey,
         padding: 8,
-      },
-      input: {
+    },
+    input: {
         flex: 1,
         color: color.darkGrey,
         backgroundColor: color.lightGrey,
         borderRadius: 25,
         paddingHorizontal: 15,
         marginRight: 8,
-      },
+    },
 });
 
 export default CommentModal;

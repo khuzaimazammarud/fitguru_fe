@@ -29,7 +29,6 @@ const Analytics = ({ navigation }) => {
     MontserratBlack: require("../../../../assets/Montserrat-Black.ttf"),
     MontserratBold: require("../../../../assets/Montserrat-Bold.ttf"),
     MontserratExtraBold: require("../../../../assets/Montserrat-ExtraBold.ttf"),
-    MontserratSemiBold: require("../../../../assets/Montserrat-SemiBold.ttf"),
     MontserratRegular: require("../../../../assets/Montserrat-Regular.ttf"),
   });
   if (!fontsLoaded) {
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 
-  label: { fontSize: 24, marginVertical: 10, fontFamily: "MontserratSemiBold" },
+  label: { fontSize: 24, marginVertical: 10 },
 });
 
 const data = [
