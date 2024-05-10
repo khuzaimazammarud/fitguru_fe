@@ -29,7 +29,7 @@ const Home = ({ navigation }) => {
         <View style={styles.screen}>
           <DailyGoals navigation={navigation} />
 
-          {/* <FeaturedVideos /> */}
+          <FeaturedVideos />
           <Banner text={"CONNECT"} image={imagePath.watchBanner} />
         </View>
       </ScrollView>
