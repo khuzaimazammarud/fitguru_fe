@@ -44,6 +44,13 @@ function BodyInfo({ data, setData, setSteps, navigation }) {
         isNumber={true}
         onChangeText={(number) => setData({ ...data, height: number })}
       />
+      <TextInputField
+        placeholder="Enter your target weight in kg"
+        icon_name="shopping-bag"
+        value={data.height}
+        isNumber={true}
+        onChangeText={(number) => setData({ ...data, height: number })}
+      />
       <Text style={styles.text}>
         We need to calculate BMI. It's a tool to estimate body fat and screen
         for obesity and health risks.
