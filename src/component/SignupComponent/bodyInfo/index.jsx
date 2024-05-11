@@ -49,7 +49,7 @@ function BodyInfo({ data, setData, setSteps, navigation }) {
         icon_name="shopping-bag"
         value={data.height}
         isNumber={true}
-        onChangeText={(number) => setData({ ...data, height: number })}
+        onChangeText={(number) => setData({ ...data, targetWeight: number })}
       />
       <Text style={styles.text}>
         We need to calculate BMI. It's a tool to estimate body fat and screen

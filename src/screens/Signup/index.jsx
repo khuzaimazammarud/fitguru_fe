@@ -25,9 +25,12 @@ const Signup = ({ navigation }) => {
         gender: '',
         age: '',
         weight: '',
-        height: ''
+        height: '',
+        targetWeight: '',
+        activityLevel: "",
+        targetWeight: 0
+
     });
-    const [goal, setGoal] = useState();
     const [steps, setSteps] = useState(1);
 
     //handling api finction
