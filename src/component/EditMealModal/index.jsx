@@ -4,70 +4,14 @@ import { moderateScale, verticalScale } from 'react-native-size-matters'
 import color from '../../styles/color';
 import Icon, { Icons } from '../Icons';
 import EditMeal from '../MealEditComponent';
+import { useSelector } from 'react-redux';
 
 const transparent = 'rgba(0,0,0,0)';
 
 const EditMealModal = ({ open, setOpen }) => {
 
-    const [foodHistory, setFoodHistory] = useState({
-        breakfast: [
-            {
-                food: 'egg',
-                calories: 78
-            },
-            {
-                food: 'bread',
-                calories: 56
-            },
-            {
-                food: 'milk',
-                calories: 9
-            },   
-        ],
-        lunch: [
-            {
-                food: 'egg',
-                calories: 78
-            },
-            {
-                food: 'bread',
-                calories: 56
-            },
-            {
-                food: 'milk',
-                calories: 9
-            },
-        ],
-        snack: [
-            {
-                food: 'egg',
-                calories: 78
-            },
-            {
-                food: 'bread',
-                calories: 56
-            },
-            {
-                food: 'milk',
-                calories: 9
-            },
-        ],
-        dinner: [
-            {
-                food: 'egg',
-                calories: 78
-            },
-            {
-                food: 'bread',
-                calories: 56
-            },
-            {
-                food: 'milk',
-                calories: 9
-            },
-        ]
-    });
-
+    const foodLog = useSelector((state) => state.goal);
+     
     return (
         <Modal visible={open} animationType='slide' transparent={true}>
             <View style={styles.container}>
@@ -80,7 +24,7 @@ const EditMealModal = ({ open, setOpen }) => {
                     </TouchableOpacity>
                     <Text style={styles.primaryText}>Today Meal Log</Text>
                     <View style={styles.card}>
-                        <EditMeal time={'BreakFast'} Fooddata={foodHistory.breakfast}/>
+                        <EditMeal time={'BreakFast'} Fooddata={foodLog.foods}/>
                     </View>
                 </View>
             </View>

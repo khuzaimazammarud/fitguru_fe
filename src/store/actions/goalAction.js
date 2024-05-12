@@ -7,7 +7,7 @@ export const fetchGoalProgress = (goalId) => async (dispatch) => {
     const res = await axios.get(`${GetProgress}/${goalId}`);
     dispatch({
       type: FETCH_GOAL_PROGRESS,
-      payload: res.data.data.progress,
+      payload: res.data.data,
     });
   } catch (err) {
     console.log(err);

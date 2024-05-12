@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { verticalScale, moderateScale } from "react-native-size-matters";
 import Header from "../../../component/HomeComponent/Header";
@@ -21,8 +21,11 @@ import { LogMeal, getGoal } from "../../../configs/urls";
 import axios from "axios";
 import { getMealTime } from "../../../utils/timeOfDay";
 import { ShowSuccess } from "../../../utils/flashMessages";
+import { fetchGoalProgress } from "../../../store/actions/goalAction";
 
 const FoodView = ({ navigation, route }) => {
+
+  const dispatch = useDispatch();
   const food = route.params;
   const auth = useSelector((state) => state.AuthReducer);
   const [goalData, setGoalData] = useState({});
@@ -102,7 +105,7 @@ const FoodView = ({ navigation, route }) => {
       };
       const { data } = await axios.post(`${LogMeal}`, payload);
       ShowSuccess('Meal added successfully');
-      console.log("🚀 ~ AddMeal ~ data:", data)
+      dispatch(fetchGoalProgress(auth?.userData?.goalId));
 
     } catch (error) {
 
