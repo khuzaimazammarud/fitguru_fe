@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from "./types";
+import { SET_CURRENT_USER, SET_GOAL_DATA } from "./types";
 
 const initialState = {
     isAuthenticated: false,

@@ -5,9 +5,12 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import AuthReducer from "./reducers";
+import goalReducer from "./moreReducer/goalReducer";
 
 
 const RootReducer = combineReducers({
-    AuthReducer
+    AuthReducer,
+    goal: goalReducer
 });
+
 export const store = createStore(RootReducer, applyMiddleware(thunk));

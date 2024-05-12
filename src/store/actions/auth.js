@@ -4,7 +4,7 @@ import setAuthToken from "../../utils/authToken";
 import jwtDecode from "jwt-decode";
 
 import { LOGIN } from "../../configs/urls";
-import { SET_CURRENT_USER } from "../types";
+import { SET_CURRENT_USER, SET_GOAL_DATA } from "../types";
 import { ShowError } from "../../utils/flashMessages";
 
 export const Init = () => async dispatch => {
@@ -24,17 +24,20 @@ export const Singin = userData => async dispatch => {
         await AsyncStorage.setItem('jwt-token', token);
         setAuthToken(token);
         const decode = jwtDecode(token);
-        dispatch(setCurrentUser(decode));
+        dispatch(setCurrentUser(decode, response.data.goal));
     } catch (error) {
         ShowError(error.response.data.message);
     }
 }
 
-const setCurrentUser = (decode) => {
-    return {
-        type: SET_CURRENT_USER,
-        payload: decode
+const setCurrentUser = (decode, goal) => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: {
+      ...decode,
+      goal // this will add the goal to the payload
     }
+  }
 }
 
 export const Signout = () => {

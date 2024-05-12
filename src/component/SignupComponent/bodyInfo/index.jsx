@@ -47,7 +47,7 @@ function BodyInfo({ data, setData, setSteps, navigation }) {
       <TextInputField
         placeholder="Enter your target weight in kg"
         icon_name="shopping-bag"
-        value={data.height}
+        value={data.targetWeight}
         isNumber={true}
         onChangeText={(number) => setData({ ...data, targetWeight: number })}
       />

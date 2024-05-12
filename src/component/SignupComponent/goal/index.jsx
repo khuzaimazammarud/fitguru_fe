@@ -10,12 +10,12 @@ import { useEffect } from "react";
 import SubmitButton from "../../ButtonSubmit";
 import RadioButton from "../../RadioButton";
 
-function GoalInfo({ onSignup }) {
-  const [selected, setSelected] = useState(0);
+function GoalInfo({ onSignup, data, setData }) {
+  const [selected, setSelected] = useState(1);
   const [suggestion, setSuggestion] = useState("");
 
   function StreamText(delay) {
-    const text = `According to our calculation you should choose gain weight cause your bmi score is 18.6 and to avoid obesity`;
+    const text = `According`;
     let partialText = "";
     let i = 0;
 
@@ -34,27 +34,70 @@ function GoalInfo({ onSignup }) {
   useEffect(() => {
     StreamText(10);
   }, []);
+  useEffect(() => {
+    if(selected === 1){
+        setData({
+            ...data,
+            activityLevel: "sedentary"
+        })
+    }else if(selected === 2){
+        setData({
+            ...data,
+            activityLevel: "lightlyActive"
+        })
+    }else if(selected === 3){
+        setData({
+            ...data,
+            activityLevel: "moderatelyActive"
+        })
+    }else if(selected === 4){
+        setData({
+            ...data,
+            activityLevel: "veryActive"
+        })
+    }else if(selected === 5){
+        setData({
+            ...data,
+            activityLevel: "extremelyActive"
+        })
+    }
+  }, [selected]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.desc}>What is your goal?</Text>
+      {
+        console.log(selected)
+      }
+      <Text style={styles.desc}>What is your Routine?</Text>
       <RadioButton
-        text="Gain weight"
+        text="sedentary"
         setSelected={setSelected}
         selected={selected}
         value={1}
       />
       <RadioButton
-        text="Maintain weight"
+        text="lightlyActive"
         setSelected={setSelected}
         selected={selected}
         value={2}
       />
       <RadioButton
-        text="Loss weight"
+        text="moderatelyActive"
         setSelected={setSelected}
         selected={selected}
         value={3}
+      />
+      <RadioButton
+        text="veryActive"
+        setSelected={setSelected}
+        selected={selected}
+        value={4}
+      />
+      <RadioButton
+        text="extremelyActive"
+        setSelected={setSelected}
+        selected={selected}
+        value={5}
       />
       <Text style={styles.text}>{suggestion}</Text>
       <View>

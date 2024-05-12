@@ -13,6 +13,7 @@ import * as Progress from "react-native-progress";
 import imagePath from "../../../constants/imagePath";
 
 import EditMealModal from "../../EditMealModal";
+import { useSelector } from "react-redux";
 
 const banner = require("../../../assets/images/bg2.jpg");
 const banner2 = require("../../../assets/images/bg3.jpg");
@@ -22,7 +23,49 @@ const yoga = require("../../../assets/images/yoga.png");
 const cycle = require("../../../assets/images/cycle.png");
 const water = require("../../../assets/images/water.png");
 
-const Analytics = ({ navigation }) => {
+const Analytics = ({ navigation, goalData }) => {
+
+  const goalAchived = useSelector((state) => state.goal);
+    
+  const data = [
+    {
+      name: "Calories",
+      status: goalAchived?.caloriesProgress,
+      image: cycle,
+      lightColor: "#f8e4d9",
+      color: "#fcf1ea",
+      darkColor: "#fac5a4",
+      value: goalData.dailyCalories,
+    },
+    {
+      name: "Fat",
+      status: goalAchived?.fatsProgress,
+      image: walk,
+      lightColor: "#d7f0f7",
+      color: "#e8f7fc",
+      darkColor: "#4CB9E7",
+      value: goalData.dailyFat,
+    },
+    {
+      name: "protien",
+      status: goalAchived?.proteinProgress,
+      image: yoga,
+      lightColor: "#dad5fe",
+      color: "#e7e3ff",
+      darkColor: "#8860a2",
+      value: goalData.dailyProtein,
+    },
+    {
+      name: "Carbs",
+      status: goalAchived?.carbsProgress,
+      image: water,
+      lightColor: "#B4D4FF",
+      color: "#B4D4FF",
+      darkColor: "#176B87",
+      value: goalData.dailyCarbs,
+    },
+  ];
+
   const [open, setOpen] = useState(false);
 
   const [fontsLoaded] = useFonts({
@@ -109,11 +152,11 @@ const Card = ({ data, index }) => {
         />
       </View>
       <View>
-        <Text style={{ fontSize: 10, fontFamily: "MontserratBold" }}>
-          {"Day     1"}
+        <Text style={{ fontSize: 8, fontFamily: "MontserratBold" }}>
+          Daily Goal
         </Text>
-        <Text style={{ fontSize: 10, fontFamily: "MontserratRegular" }}>
-          {"Time    20 Min"}
+        <Text style={{ fontSize: 15, fontFamily: "MontserratBold" }}>
+          {data.value}
         </Text>
       </View>
       <View
@@ -163,39 +206,6 @@ const styles = StyleSheet.create({
   label: { fontSize: 24, marginVertical: 10 },
 });
 
-const data = [
-  {
-    name: "Protien",
-    status: 85,
-    image: cycle,
-    lightColor: "#f8e4d9",
-    color: "#fcf1ea",
-    darkColor: "#fac5a4",
-  },
-  {
-    name: "Fat",
-    status: 25,
-    image: walk,
-    lightColor: "#d7f0f7",
-    color: "#e8f7fc",
-    darkColor: "#4CB9E7",
-  },
-  {
-    name: "Carb",
-    status: 85,
-    image: yoga,
-    lightColor: "#dad5fe",
-    color: "#e7e3ff",
-    darkColor: "#8860a2",
-  },
-  {
-    name: "Hydration",
-    status: 65,
-    image: water,
-    lightColor: "#B4D4FF",
-    color: "#B4D4FF",
-    darkColor: "#176B87",
-  },
-];
+
 
 export default Analytics;

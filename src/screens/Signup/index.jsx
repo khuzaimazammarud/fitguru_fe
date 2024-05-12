@@ -28,7 +28,7 @@ const Signup = ({ navigation }) => {
         height: '',
         targetWeight: '',
         activityLevel: "",
-        targetWeight: 0
+        targetWeight: ''
 
     });
     const [steps, setSteps] = useState(1);
@@ -55,6 +55,9 @@ const Signup = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            {
+                console.log(data)
+            }
             {/* <View style = {styles.imageholder}>
             <Image
                 source={imagePath.logo}
@@ -67,7 +70,7 @@ const Signup = ({ navigation }) => {
             {steps === 2 ? <Gender data={data} setData={setData} setSteps={setSteps} /> : null}
             {steps === 3 ? <BodyInfo data={data} setData={setData} setSteps={setSteps} /> : null}
             {steps === 4 ? <MapWithButtons data={data} setData={setData} setSteps={setSteps}/> : null}
-            {steps === 5 ? <GoalInfo onSignup={onSignup} /> : null}
+            {steps === 5 ? <GoalInfo data={data} setData={setData} onSignup={onSignup} /> : null}
         </SafeAreaView>
     )
 }
