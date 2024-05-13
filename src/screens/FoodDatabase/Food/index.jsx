@@ -13,7 +13,7 @@ import FoodList from '../../../component/FoodDatabase/FoodList';
 
 const Food = ({navigation}) => {
     
-    const [search, setSearch] = useState('chicken');
+    const [search, setSearch] = useState('wings');
     const [food, setFood] = useState([]);
     const [categoryItem, seCategoryItem] = useState(['MEAT', 'DAIRY', 'VEGETABLE', 'FRUIT'])
 

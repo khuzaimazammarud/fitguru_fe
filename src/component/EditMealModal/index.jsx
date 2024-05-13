@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 5,
         elevation: 2,
+        maxHeight: '75%'
     },
     primaryText: {
         fontSize: moderateScale(20),
