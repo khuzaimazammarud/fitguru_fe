@@ -80,7 +80,7 @@ const Analytics = ({ navigation, goalData }) => {
 
   return (
     <>
-      <TouchableOpacity onPress={() => navigation.navigate("Analytics")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Analytics", { goalData })}>
         <Banner text={"ANALYTICS"} image={banner} />
       </TouchableOpacity>
       <View style={{ marginHorizontal: "3%" }}>

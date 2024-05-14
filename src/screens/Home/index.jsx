@@ -38,7 +38,7 @@ const Home = ({ navigation }) => {
         <View style={styles.screen}>
           <DailyGoals navigation={navigation} goalData={goalData}/>
           <FeaturedVideos />
-          <Banner text={"CONNECT"} image={imagePath.watchBanner} />
+          {/* <Banner text={"CONNECT"} image={imagePath.watchBanner} /> */}
         </View>
       </ScrollView>
     </SafeAreaView>

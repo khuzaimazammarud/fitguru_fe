@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import { moderateScale, verticalScale } from "react-native-size-matters";
@@ -17,20 +11,22 @@ import color from "../../styles/color";
 import TextInputField from "../../component/TextInputField";
 import FoodHistoryList from "../../component/AnalyticsComponent/FoodHistoryList";
 import ChartComponent from "../../component/AnalyticsComponent/Chart";
-import { ProgressAnalytics } from "../../configs/urls";
+import { ProgressAnalytics, UpdateWeights } from "../../configs/urls";
 import FilteredFoodList from "../../component/AnalyticsComponent/FoodHistoryList";
 import DateDropdown from "../../component/DateDropDown";
+import { ShowSuccess } from "../../utils/flashMessages";
 // import DateDropdown from "../../component/DateDropDown";
 
-
-const Analytics = ({ navigation }) => {
+const Analytics = ({ navigation, route }) => {
   const auth = useSelector((state) => state.AuthReducer);
+  const [goalData, setGoalData] = useState(route.params); 
   const [selected, setSelected] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [SelectedDate, setSelectedDate] = useState("");
   const [showChart, setshowChart] = useState(false);
   const [analyticsData, setAnalyticsData] = useState([]);
+  const [weight, setWeight] = useState(0);
 
   //dataset for food history
   const [foodHistory, setFoodHistory] = useState({
@@ -121,7 +117,6 @@ const Analytics = ({ navigation }) => {
         setshowChart(true);
         fetchAnalytics(day.dateString);
       }
-      
     } else {
       setStartDate(day.dateString);
       setEndDate("");
@@ -137,22 +132,43 @@ const Analytics = ({ navigation }) => {
     }
   };
 
-
   //I have pass end parameter cause state was gettting set directy after calling the function
-  const fetchAnalytics = async(endDate) => {
-    try{
+  const fetchAnalytics = async (endDate) => {
+    try {
       const payload = {
         goal: auth?.userData?.goalId,
         startDate: `${startDate}T00:00:00.00+00:00`,
         endDate: `${endDate}T23:59:59.999Z`,
-      }
+      };
       console.log("🚀 ~ fetchAnalytics ~ payload:", payload);
-      
-      const {data} = await axios.post(`${ProgressAnalytics}/report`, payload);
-      setAnalyticsData(data.data);
 
-    }catch(error){
-    console.log("🚀 ~ fetchAnalytics ~ error:", error)
+      const { data } = await axios.post(`${ProgressAnalytics}/report`, payload);
+      setAnalyticsData(data.data);
+    } catch (error) {
+      console.log("🚀 ~ fetchAnalytics ~ error:", error);
+    }
+  };
+
+  const updateWeight = async () => {
+    try {
+      const payload = {
+        weight,
+      };
+      const { data } = await axios.put(`${UpdateWeights}/${auth?.userData?.id}`, payload);
+      ShowSuccess(data.message);
+      setGoalData((prevData) => ({
+        ...prevData,
+        goalData: {
+          ...prevData.goalData,
+          user: {
+            ...prevData.goalData.user,
+            weight
+          }
+        }
+      }));  
+      console.log("🚀 ~ updateWeight ~ data:", data);
+    } catch (error) {
+      console.log("🚀 ~ updateWeight ~ error:", error);
     }
   };
 
@@ -165,11 +181,28 @@ const Analytics = ({ navigation }) => {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={styles.secondryText}>55.6 KG</Text>
-            <Text style={styles.secondryText}>74.6 KG</Text>
+            <Text style={styles.secondryText}>Current: {goalData?.goalData?.user?.weight}</Text>
+            <Text style={styles.secondryText}>Target: {goalData?.goalData?.targetWeight} KG</Text>
           </View>
-          <View style={styles.loader}>
+          {/* <View style={styles.loader}>
             <View style={styles.loaderPercentage}></View>
+          </View> */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.inputField}
+              placeholder="Enter latest weight"
+              keyboardType="numeric"
+              onChangeText={(num) => {
+                setWeight(num);
+              }}
+              value={weight.toString()}
+            />
+            <TouchableOpacity
+              style={styles.updateButton}
+              onPress={updateWeight}
+            >
+              <Text style={styles.buttonText}>Update Weight</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View>
@@ -202,7 +235,7 @@ const Analytics = ({ navigation }) => {
               <Text>From: {startDate}</Text>
               <Text>To: {endDate}</Text>
             </View>
-            <ChartComponent analyticsData = {analyticsData}/>
+            <ChartComponent analyticsData={analyticsData} />
           </View>
         ) : null}
 
@@ -214,12 +247,15 @@ const Analytics = ({ navigation }) => {
             ]}
           >
             <Text style={styles.primaryText}>Food History</Text>
-            <DateDropdown analyticsData={analyticsData} setSelectedDate = {setSelectedDate}/>
+            <DateDropdown
+              analyticsData={analyticsData}
+              setSelectedDate={setSelectedDate}
+            />
             <View style={styles.analyticsCard}>
               <FoodHistoryList
                 time={"BreakFast"}
                 Fooddata={analyticsData}
-                SelectedDate = {SelectedDate}
+                SelectedDate={SelectedDate}
               />
             </View>
           </View>
@@ -287,6 +323,28 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(12),
     width: "67%",
   },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 8,
+    width: '50%',
+    marginRight: 10,
+  },
+  updateButton: {
+    backgroundColor: color.dark,
+    padding: moderateScale(5),
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+  }
+  
 });
 
 export default Analytics;

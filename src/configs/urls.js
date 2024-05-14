@@ -8,6 +8,7 @@ export const SIGNUP = getApiUrl("/users/signup");
 export const sendEmail = getApiUrl("/users/sendemail");
 export const VerifyOtp = getApiUrl("/users/verifyOtp");
 export const UpdatePassword = getApiUrl("/users/updatePassword");
+export const UpdateWeights = getApiUrl("/users/updateWeight");
 export const CreateGoal = getApiUrl("/goals/create");
 export const getGoal = getApiUrl("/goals/user");
 export const GetFood = getApiUrl("/food");
