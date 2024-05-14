@@ -13,23 +13,28 @@ import FoodList from '../../../component/FoodDatabase/FoodList';
 
 const Food = ({navigation}) => {
     
-    const [search, setSearch] = useState('wings');
+    const [search, setSearch] = useState('Meat');
     const [food, setFood] = useState([]);
-    const [categoryItem, seCategoryItem] = useState(['MEAT', 'DAIRY', 'VEGETABLE', 'FRUIT'])
+    const [categoryItem, setCategoryItem] = useState(['MEAT', 'DAIRY', 'VEGETABLE', 'FRUIT']);
 
-    const getFood = async() => {
-        // console.log("🚀 ~ file: index.jsx:14 ~ getFood ~ GetFood:", GetFood)
-        try{
+    // Function to fetch food data
+    const getFood = async () => {
+        try {
             const response = await axios.get(`${GetFood}/${search}`);
-            setFood(response.data.hints)
-        }catch(error){
-            console.log(error)
+            setFood(response.data.hints);
+        } catch (error) {
+            console.error("Error fetching food data:", error);
         }
-    }
+    };
 
-    useEffect(()=> {
-        getFood();
-    },[])
+    // Effect for debouncing search input
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            getFood();
+        }, 800);  // Delay in ms, adjust as needed
+
+        return () => clearTimeout(timerId);  // Clean up the timer
+    }, [search]); 
 
     return (
         <SafeAreaView style={styles.container}>
@@ -44,7 +49,7 @@ const Food = ({navigation}) => {
                     }}
                 />
             </View>
-            <CategoryList categoryItems={categoryItem} name={'khuzema'}/>
+            <CategoryList categoryItems={categoryItem} name={'khuzema'} setSearch={setSearch}/>
             <FlatList 
              columnWrapperStyle = {{justifyContent: 'space-between'}}
              numColumns={2}

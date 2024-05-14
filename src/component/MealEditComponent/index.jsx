@@ -63,7 +63,8 @@ const EditMeal = ({ time, Fooddata }) => {
             style={{ width: 50, height: 50, borderRadius: moderateScale(5) }}
           />
           <View style={{ flex: 1, marginLeft: 10 }}>
-            <Text style={{ fontSize: moderateScale(15) }}>{item.label}</Text>
+            <Text style={{ fontSize: moderateScale(15) }}>{item?.label}</Text>
+            <Text style={{ fontSize: moderateScale(15) }}>{item?.timeOfDay}</Text>
           </View>
           <TouchableOpacity onPress={() => handleDelete(item.entryId)}>
             <Icon type={Icons.FontAwesome} name={"close"} />

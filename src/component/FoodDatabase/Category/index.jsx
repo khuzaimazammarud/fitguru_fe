@@ -6,7 +6,7 @@ import color from '../../../styles/color';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import color from '../../styles/color';
 
-const CategoryList = ({categoryItems, name}) => {
+const CategoryList = ({categoryItems, name, setSearch}) => {
 
     const [selected, setSelected] = useState(0);
 
@@ -20,7 +20,10 @@ const CategoryList = ({categoryItems, name}) => {
                 categoryItems.map((items, idx) => (
                     <TouchableOpacity 
                         key={idx}
-                        onPress={() => setSelected(idx)}
+                        onPress={() =>{ 
+                            setSearch(items)
+                            setSelected(idx)
+                        }}
                         activeOpacity={0.8}
                     >
                         <Text style={[styles.categoryTab, selected === idx && styles.CategorySelectedTab]}>

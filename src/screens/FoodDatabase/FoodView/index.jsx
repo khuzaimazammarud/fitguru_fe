@@ -27,6 +27,7 @@ const FoodView = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
   const food = route.params;
+  console.log("🚀 ~ FoodView ~ food:", food);
   const auth = useSelector((state) => state.AuthReducer);
   const [goalData, setGoalData] = useState({});
 

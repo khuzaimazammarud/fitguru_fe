@@ -19,3 +19,4 @@ export const GetComments = getApiUrl("/comment");
 export const LogMeal = getApiUrl("/progress");
 export const GetProgress = getApiUrl("/progress/total");
 export const DeleteEntry = getApiUrl("/progress");
+export const ProgressAnalytics = getApiUrl("/progress");

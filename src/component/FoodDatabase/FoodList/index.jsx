@@ -15,7 +15,7 @@ const FoodList = ({food, navigation}) => {
                 onPress={() => navigation.navigate('FoodView', food)}
             >
                 <Image
-                    source={{ uri: food.food.image }}
+                    source={{ uri: food.food.image ? food.food.image: 'https://via.placeholder.com/150'}}
                     style={{ width: '100%', height: '100%', borderRadius: moderateScale(5) }}
                     resizeMode="cover"
                 />

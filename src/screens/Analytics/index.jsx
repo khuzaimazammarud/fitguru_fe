@@ -1,60 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   Button,
-  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
-import Svg, { G, Circle, Rect } from "react-native-svg";
-import {
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
-
 import { moderateScale, verticalScale } from "react-native-size-matters";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
 import Header from "../../component/HomeComponent/Header";
 import color from "../../styles/color";
 import TextInputField from "../../component/TextInputField";
 import FoodHistoryList from "../../component/AnalyticsComponent/FoodHistoryList";
+import ChartComponent from "../../component/AnalyticsComponent/Chart";
+import { ProgressAnalytics } from "../../configs/urls";
+import FilteredFoodList from "../../component/AnalyticsComponent/FoodHistoryList";
+import DateDropdown from "../../component/DateDropDown";
+// import DateDropdown from "../../component/DateDropDown";
 
-const screenWidth = Dimensions.get("window").width;
 
 const Analytics = ({ navigation }) => {
+  const auth = useSelector((state) => state.AuthReducer);
   const [selected, setSelected] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [SelectedDate, setSelectedDate] = useState("");
   const [showChart, setshowChart] = useState(false);
-
-  //for Chart
-  const data = {
-    labels: ["carb", "fat", "protien"], // optional
-    data: [0.4, 0.6, 0.8],
-  };
-  const barChartData = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43],
-      },
-    ],
-  };
-  const chartConfig = {
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#08130D",
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    strokeWidth: 1, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
-  };
+  const [analyticsData, setAnalyticsData] = useState([]);
 
   //dataset for food history
   const [foodHistory, setFoodHistory] = useState({
@@ -142,8 +118,10 @@ const Analytics = ({ navigation }) => {
             textColor: "white",
           },
         });
+        setshowChart(true);
+        fetchAnalytics(day.dateString);
       }
-      setshowChart(true);
+      
     } else {
       setStartDate(day.dateString);
       setEndDate("");
@@ -156,6 +134,25 @@ const Analytics = ({ navigation }) => {
         },
       });
       setshowChart(false);
+    }
+  };
+
+
+  //I have pass end parameter cause state was gettting set directy after calling the function
+  const fetchAnalytics = async(endDate) => {
+    try{
+      const payload = {
+        goal: auth?.userData?.goalId,
+        startDate: `${startDate}T00:00:00.00+00:00`,
+        endDate: `${endDate}T23:59:59.999Z`,
+      }
+      console.log("🚀 ~ fetchAnalytics ~ payload:", payload);
+      
+      const {data} = await axios.post(`${ProgressAnalytics}/report`, payload);
+      setAnalyticsData(data.data);
+
+    }catch(error){
+    console.log("🚀 ~ fetchAnalytics ~ error:", error)
     }
   };
 
@@ -205,25 +202,7 @@ const Analytics = ({ navigation }) => {
               <Text>From: {startDate}</Text>
               <Text>To: {endDate}</Text>
             </View>
-            <ProgressChart
-              style={{ borderRadius: 5, marginVertical: verticalScale(5) }}
-              data={data}
-              width={screenWidth / 1.17}
-              height={220}
-              strokeWidth={16}
-              radius={32}
-              chartConfig={chartConfig}
-              hideLegend={false}
-            />
-            <BarChart
-              style={{ borderRadius: 5, marginVertical: verticalScale(5) }}
-              data={barChartData}
-              width={screenWidth / 1.17}
-              height={220}
-              yAxisLabel="$"
-              chartConfig={chartConfig}
-              verticalLabelRotation={30}
-            />
+            <ChartComponent analyticsData = {analyticsData}/>
           </View>
         ) : null}
 
@@ -235,15 +214,13 @@ const Analytics = ({ navigation }) => {
             ]}
           >
             <Text style={styles.primaryText}>Food History</Text>
-            <TextInputField placeholder={"Enter Date"} icon_name={"calendar"} />
+            <DateDropdown analyticsData={analyticsData} setSelectedDate = {setSelectedDate}/>
             <View style={styles.analyticsCard}>
               <FoodHistoryList
                 time={"BreakFast"}
-                Fooddata={foodHistory.breakfast}
+                Fooddata={analyticsData}
+                SelectedDate = {SelectedDate}
               />
-              <FoodHistoryList time={"Lunch"} Fooddata={foodHistory.lunch} />
-              <FoodHistoryList time={"Snack"} Fooddata={foodHistory.snack} />
-              <FoodHistoryList time={"Dinner"} Fooddata={foodHistory.dinner} />
             </View>
           </View>
         ) : null}
@@ -255,7 +232,7 @@ const Analytics = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: moderateScale(15),
+    padding: moderateScale(10),
   },
   card: {
     marginVertical: verticalScale(15),
