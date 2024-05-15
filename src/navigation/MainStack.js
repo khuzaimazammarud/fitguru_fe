@@ -11,6 +11,8 @@ import Home from "../screens/Home";
 import Post from "../screens/Community/Post";
 import Reels from "../screens/Community/Reels";
 import UserProfile from "../screens/UserProfile";
+import SearchScreen from "../screens/Community/SearchScreen";
+
 import Food from "../screens/FoodDatabase/Food";
 import Analytics from "../screens/Analytics";
 import EditScreen from "../screens/EditScreen";
@@ -68,6 +70,15 @@ const TabArr = [
     activeIcon: "user",
     inActiveIcon: "user",
     component: UserProfile,
+  },
+  {
+    key: 6,
+    route: "search",
+    label: "search",
+    type: Icons.FontAwesome,
+    activeIcon: "user",
+    inActiveIcon: "user",
+    component: SearchScreen,
   },
 ];
 
