@@ -1,16 +1,10 @@
 import React, { useRef, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-  Text,
-  Image,
-} from "react-native";
+import { View, StyleSheet, FlatList, Dimensions, Text, Image } from "react-native";
 import { Video } from "expo-av";
 import { AntDesign } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
 
-const { height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const videoData = [
   {
@@ -47,51 +41,71 @@ const videoData = [
   },
 ];
 
-export default function Reels() {
+const Reels = () => {
   const videoRefs = useRef({});
   const flatListRef = useRef(null);
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 }); // Ensures that 50% of the item must be visible for it to be considered viewable
+  const isFocused = useIsFocused();
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    viewableItems.forEach((item) => {
-      const videoRef = videoRefs.current[item.item.id];
+  useEffect(() => {
+    return () => {
+      // Cleanup videos on component unmount
+      Object.values(videoRefs.current).forEach(video => {
+        if (video) {
+          video.unloadAsync();
+        }
+      });
+    };
+  }, []);
+
+
+  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    viewableItems.forEach(({ item }) => {
+      const videoRef = videoRefs.current[item.id];
       if (videoRef) {
         videoRef.playAsync();
       }
     });
 
-    Object.keys(videoRefs.current).forEach((key) => {
-      if (!viewableItems.find((item) => item.item.id.toString() === key)) {
+    Object.keys(videoRefs.current).forEach(key => {
+      if (!viewableItems.some(({ item }) => item.id.toString() === key)) {
         const videoRef = videoRefs.current[key];
-        if (videoRef) {
-          videoRef.pauseAsync();
-        }
+        videoRef?.pauseAsync();
       }
     });
+  }).current;
+
+  const handlePlaybackStatusUpdate = (status, id) => {
+    if (status.didJustFinish) {
+      // Advance to next video automatically
+      const index = videoData.findIndex(v => v.id === id);
+      if (index !== -1 && index < videoData.length - 1) {
+        flatListRef.current.scrollToIndex({ index: index + 1, animated: true });
+      }
+    }
   };
 
   const renderItem = ({ item }) => {
     return (
       <View style={styles.videoContainer}>
         <Video
-          ref={(ref) => (videoRefs.current[item.id] = ref)}
-          style={item.id === 1 ? styles.fullScreenVideo : styles.video}
+          ref={ref => (videoRefs.current[item.id] = ref)}
+          style={styles.video}
           source={item.path}
           useNativeControls={false}
-          resizeMode={Video.RESIZE_MODE_STRETCH}
+          resizeMode="cover"
           isLooping
-          onPlaybackStatusUpdate={(status) => console.log(status)}
-          shouldPlay
+          onPlaybackStatusUpdate={status => handlePlaybackStatusUpdate(status, item.id)}
+          shouldPlay={isFocused}
         />
         <View style={styles.overlay}>
           <Image source={item.avatar} style={styles.avatar} />
-          <View style={styles.textContainer}>
-            <Text style={styles.caption}>{item.caption}</Text>
-            <View style={styles.infoContainer}>
-              <AntDesign name="heart" size={18} color="white" />
-              <Text style={styles.likeCount}>{item.likeCount}</Text>
-              <AntDesign name="message1" size={18} color="white" />
-              <Text style={styles.commentCount}>{item.commentCount}</Text>
-            </View>
+          <Text style={styles.caption}>{item.caption}</Text>
+          <View style={styles.infoContainer}>
+            <AntDesign name="heart" size={18} color="white" />
+            <Text style={styles.likeCount}>{item.likeCount}</Text>
+            <AntDesign name="message1" size={18} color="white" />
+            <Text style={styles.commentCount}>{item.commentCount}</Text>
           </View>
         </View>
       </View>
@@ -99,71 +113,64 @@ export default function Reels() {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={videoData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        onEndReached={() => {}}
-        onEndReachedThreshold={0.1}
-        onViewableItemsChanged={onViewableItemsChanged}
-      />
-    </View>
+    <FlatList
+      ref={flatListRef}
+      data={videoData}
+      keyExtractor={item => item.id.toString()}
+      renderItem={renderItem}
+      onViewableItemsChanged={onViewableItemsChanged}
+      viewabilityConfig={viewConfigRef.current}
+      pagingEnabled={true} // Enables snapping behavior similar to Instagram or TikTok
+    />
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "black",
-  },
   videoContainer: {
-    flex: 1,
-    marginTop: screenHeight * 0.1, // Adjust the marginTop as needed
-  },
-  fullScreenVideo: {
-    width: "100%",
-    height: screenHeight * 0.8,
+    width: screenWidth,
+    height: screenHeight,
+    justifyContent: "center",
+    alignItems: "center"
   },
   video: {
     width: "100%",
-    height: screenHeight * 0.8, // Adjust the height as needed
+    height: "100%"
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
-    padding: 16,
+    alignItems: "center"
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 12,
+    borderColor: "white",
+    borderWidth: 1
   },
   caption: {
     color: "white",
     fontSize: 16,
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background for better readability
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 8,
-    borderRadius: 8,
+    borderRadius: 8
   },
   infoContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    marginTop: 8,
+    alignItems: "center"
   },
   likeCount: {
     color: "white",
-    marginLeft: 4,
+    marginLeft: 4
   },
   commentCount: {
     color: "white",
-    marginLeft: 8,
-  },
+    marginLeft: 8
+  }
 });
+
+export default Reels;
