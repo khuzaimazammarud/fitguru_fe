@@ -16,6 +16,7 @@ import OtpScreen from "../screens/ForgotPassword/OtpScreen";
 import ChangePasswordScreen from "../screens/ForgotPassword/ChangePasswordScreen";
 import SuccessScreen from "../screens/ForgotPassword/SuccessScreen";
 import EditScreen from "../screens/EditScreen";
+import FollowersScreen from "../screens/Community/FollowersScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,20 +42,15 @@ function Routes() {
             <Stack.Screen name="Analytics" component={Analytics} />
             <Stack.Screen name="WaterTracking" component={WaterTracking} />
             <Stack.Screen name="AddPost" component={AddPost} />
-            <Stack.Screen name="SendEmail" component={SendEmail}/>
+            <Stack.Screen name="SendEmail" component={SendEmail} />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
             <Stack.Screen
               name="changePasswordScreen"
               component={ChangePasswordScreen}
             />
-            <Stack.Screen
-              name="SuccessScreen"
-              component={SuccessScreen}
-            />
-            <Stack.Screen
-              name="EditScreen"
-              component={EditScreen}
-            />
+            <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+            <Stack.Screen name="EditScreen" component={EditScreen} />
+            <Stack.Screen name="follower" component={FollowersScreen} />
           </>
         ) : (
           AuthStact(Stack)

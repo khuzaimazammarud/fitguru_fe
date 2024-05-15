@@ -12,18 +12,21 @@ import {
 } from "react-native";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
-import { moderateScale, moderateVerticalScale } from 'react-native-size-matters'
-import Header from '../../component/HomeComponent/Header'
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from "react-native-size-matters";
+import Header from "../../component/HomeComponent/Header";
 import SettingModal from "../../component/SettingModal";
 import { getPostByUser } from "../../configs/urls";
 
 const Tab = createMaterialTopTabNavigator();
 
 const UserProfile = ({ navigation }) => {
-  const auth = useSelector(state => state.AuthReducer);
+  const auth = useSelector((state) => state.AuthReducer);
   const [isImageFullScreen, setIsImageFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -76,13 +79,17 @@ const UserProfile = ({ navigation }) => {
         setIsImageFullScreen(true);
       }}
     >
-      {
-        item.picture ? (
-          <Image source={{ uri: item.picture }} style={styles.image} resizeMode="cover" />
-        ) : (
-          <Text style={{ textAlign: 'center', alignItems: 'center' }}>Text Post</Text>
-        )
-      }
+      {item.picture ? (
+        <Image
+          source={{ uri: item.picture }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      ) : (
+        <Text style={{ textAlign: "center", alignItems: "center" }}>
+          Text Post
+        </Text>
+      )}
     </TouchableOpacity>
   );
 
@@ -94,33 +101,32 @@ const UserProfile = ({ navigation }) => {
         setSelectedItem(item);
         setIsImageFullScreen(true);
       }}
-    >{
-        item.picture ? (
-          <Image source={item.uri} style={styles.image} resizeMode="cover" />
-        ) : (
-          <Text>Text</Text>
-        )
-      }
+    >
+      {item.picture ? (
+        <Image source={item.uri} style={styles.image} resizeMode="cover" />
+      ) : (
+        <Text>Text</Text>
+      )}
     </TouchableOpacity>
   );
 
   const getPost = async () => {
     try {
       const response = await axios.get(`${getPostByUser}/${auth.userData.id}`);
-      setPosts(response.data.posts)
+      setPosts(response.data.posts);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getPost();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ padding: moderateScale(15), }}>
-        <Header navigation={navigation} screen={'Account'} setOpen={setOpen} />
+      <View style={{ padding: moderateScale(15) }}>
+        <Header navigation={navigation} screen={"Account"} setOpen={setOpen} />
       </View>
       <View style={{ alignSelf: "center" }}>
         <View style={styles.profileImage}>
@@ -145,12 +151,10 @@ const UserProfile = ({ navigation }) => {
 
       <View style={styles.statsContainer}>
         <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>
-            {posts.length}
-          </Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>{posts.length}</Text>
           <Text style={[styles.text, styles.subText]}>Posts</Text>
         </View>
-        <View
+        <TouchableOpacity
           style={[
             styles.statsBox,
             {
@@ -159,10 +163,11 @@ const UserProfile = ({ navigation }) => {
               borderRightWidth: 1,
             },
           ]}
+          onPress={() => navigation.navigate("follower")}
         >
           <Text style={[styles.text, { fontSize: 24 }]}>1.3M</Text>
           <Text style={[styles.text, styles.subText]}>Followers</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.statsBox}>
           <Text style={[styles.text, { fontSize: 24 }]}>007K</Text>
           <Text style={[styles.text, styles.subText]}>Following</Text>
@@ -213,48 +218,57 @@ const UserProfile = ({ navigation }) => {
               setSelectedItem(null);
             }}
           >
-            <View style={{ position: "absolute", top: 20, right: 20, zIndex: 999 }}>
+            <View
+              style={{ position: "absolute", top: 20, right: 20, zIndex: 999 }}
+            >
               <Ionicons name="ios-close" size={40} color="#000" />
             </View>
           </TouchableWithoutFeedback>
           {selectedItem && (
             <View style={{ flex: 1 }}>
-              {
-                selectedImage && (
-                  <Image
-                    source={{ uri: selectedImage }}
-                    style={{ flex: 1, width: "100%" }}
-                    resizeMode="contain"
-                  />
-                )
-              }
+              {selectedImage && (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={{ flex: 1, width: "100%" }}
+                  resizeMode="contain"
+                />
+              )}
               <View
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0, // Adjust this value as needed
-                  width: '100%',
+                  width: "100%",
                   padding: 10,
                 }}
               >
-                <Text style={[styles.text, { color: "black", fontWeight: "bold", top: '300%' }]}>
+                <Text
+                  style={[
+                    styles.text,
+                    { color: "black", fontWeight: "bold", top: "300%" },
+                  ]}
+                >
                   {selectedItem.content}
                 </Text>
               </View>
               <View
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   bottom: 0, // Adjust this value as needed
-                  width: '100%',
+                  width: "100%",
                   padding: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
                 }}
               >
-                <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
+                <Text
+                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
+                >
                   {selectedItem.likes.length} Likes
                 </Text>
-                <Text style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}>
+                <Text
+                  style={[styles.text, { color: "#FFF", fontWeight: "bold" }]}
+                >
                   {selectedItem.comments.length} Comments
                 </Text>
               </View>
@@ -263,7 +277,9 @@ const UserProfile = ({ navigation }) => {
         </View>
       </Modal>
 
-      {open ? <SettingModal open={true} setOpen={setOpen} navigation={navigation} /> : null}
+      {open ? (
+        <SettingModal open={true} setOpen={setOpen} navigation={navigation} />
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -359,7 +375,7 @@ const styles = StyleSheet.create({
     top: "75%",
     marginTop: -25,
     marginLeft: 6,
-    width: '100%',
+    width: "100%",
     height: moderateVerticalScale(200),
     alignItems: "center",
     justifyContent: "center",
