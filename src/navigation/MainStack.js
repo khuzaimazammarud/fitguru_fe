@@ -76,8 +76,8 @@ const TabArr = [
     route: "search",
     label: "search",
     type: Icons.FontAwesome,
-    activeIcon: "user",
-    inActiveIcon: "user",
+    activeIcon: "search",
+    inActiveIcon: "search",
     component: SearchScreen,
   },
 ];

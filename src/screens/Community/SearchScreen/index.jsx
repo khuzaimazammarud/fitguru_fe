@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,34 +12,35 @@ import { moderateScale } from "react-native-size-matters";
 import Icon from "react-native-vector-icons/Ionicons";
 import color from "../../../styles/color";
 import TextInputField from "../../../component/TextInputField";
+import { follow, getAllUser } from "../../../configs/urls";
+import axios from "axios";
+import imagePath from "../../../constants/imagePath";
+import { useSelector } from "react-redux";
+import { showMessage } from "react-native-flash-message";
+import { ShowError, ShowSuccess } from "../../../utils/flashMessages";
 
 const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const searchData = [
-    {
-      id: 1,
-      name: "Tom Cruise",
-      image: require("../../../assets/images/avatar1.png"),
-      userName: "@tomcruise",
-    },
-    {
-      id: 2,
-      name: "Henry Cavill",
-      image: require("../../../assets/images/avatar2.png"),
-      userName: "@henrycavill",
-    },
-    {
-      id: 3,
-      name: "Daniel Criag",
-      image: require("../../../assets/images/avatar4.png"),
-      userName: "@craig007",
-    },
-  ];
+  const [searchData, setSearchData] = useState([]);
 
   const filteredSearch = searchData.filter((item) => {
-    return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return item.username.toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+
+  const fetchUsers = async () => {
+    try {
+      const { data } = await axios.get(`${getAllUser}`);
+      setSearchData(data.users);
+    } catch (error) {
+      console.error("Failed to fetch followers:", error);
+    }
+  };
+
+    useEffect(() => {
+      fetchUsers();
+    },[])
 
   return (
     <View style={styles.container}>
@@ -60,28 +61,41 @@ const SearchScreen = () => {
 };
 
 const SearchList = ({ searchData }) => {
-  const deleteButton = (id) => {
-    console.log("Button clicked");
-  };
+
+  const auth = useSelector((state) => state.AuthReducer);
+
+  const handleFollow = async(id) => {
+    try{
+      const {data} = await axios.put(`${follow}`, {
+        userId: auth.userData.id,
+        followId: id
+      });
+      console.log("🚀 ~ handleFollow ~ data:", data)
+
+      ShowSuccess(data.message);
+
+    }catch(error) {
+      ShowError(error.response.data.message)
+    }
+  }
   return (
     <View style={styles.searchListContainer}>
       <FlatList
         data={searchData}
         renderItem={({ item }) => (
           <View style={styles.searchItem}>
-            <Image source={item.image} style={styles.searchImage} />
+            <Image source={imagePath.logo} style={styles.searchImage} />
             <View style={styles.searchDetails}>
               <View>
-                <Text style={styles.searchName}>{item.name}</Text>
-                <Text style={styles.searchUserName}>{item.userName}</Text>
+                <Text style={styles.searchName}>{item.username}</Text>
               </View>
-              <TouchableOpacity onPress={() => deleteButton(item.id)}>
-                <Icon name="close" size={24} color={color.primary} />
+              <TouchableOpacity style={styles.followingButton} onPress={() => handleFollow(item._id)}> 
+                <Text style={styles.followingText}>follow</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id}
       />
     </View>
   );
@@ -137,6 +151,16 @@ const styles = StyleSheet.create({
   searchUserName: {
     fontSize: moderateScale(14),
     color: color.gray,
+  },
+  followingButton: {
+    backgroundColor: color.maincolor,
+    paddingVertical: moderateScale(5),
+    paddingHorizontal: moderateScale(10),
+    borderRadius: moderateScale(20),
+  },
+  followingText: {
+    color: color.white,
+    fontSize: moderateScale(14),
   },
 });
 

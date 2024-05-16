@@ -163,19 +163,19 @@ const UserProfile = ({ navigation }) => {
               borderRightWidth: 1,
             },
           ]}
-          onPress={() => navigation.navigate("follower")}
+          onPress={() => navigation.navigate("follower", {type: 'followers'})}
         >
           <Text style={[styles.text, { fontSize: 24 }]}>1.3M</Text>
           <Text style={[styles.text, styles.subText]}>Followers</Text>
         </TouchableOpacity>
-        <View style={styles.statsBox}>
+        <TouchableOpacity style={styles.statsBox} onPress={() => navigation.navigate("follower", {type: 'following'})}>
           <Text style={[styles.text, { fontSize: 24 }]}>007K</Text>
           <Text style={[styles.text, styles.subText]}>Following</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <Tab.Navigator>
-        <Tab.Screen name="Photos Grid">
+        <Tab.Screen name="Posts">
           {() => (
             <FlatList
               data={posts}
@@ -183,18 +183,6 @@ const UserProfile = ({ navigation }) => {
               keyExtractor={(item) => item._id}
               numColumns={3}
               contentContainerStyle={{ marginTop: 10 }}
-            />
-          )}
-        </Tab.Screen>
-
-        <Tab.Screen name="Favorites Grid">
-          {() => (
-            <FlatList
-              data={favoritesImageData}
-              renderItem={renderFavoriteImageItem}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={3}
-              contentContainerStyle={{ marginTop: 16 }}
             />
           )}
         </Tab.Screen>

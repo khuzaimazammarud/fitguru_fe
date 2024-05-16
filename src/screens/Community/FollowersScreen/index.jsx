@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,103 +7,120 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 import Icon from "react-native-vector-icons/Ionicons";
 import color from "../../../styles/color";
 import TextInputField from "../../../component/TextInputField";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { getFollowers, getFollwing, unfollow } from "../../../configs/urls";
+import imagePath from "../../../constants/imagePath";
 
-const FollowersScreen = () => {
-  const [userData, setUserData] = useState({
-    name: "SRK",
-    email: "@iamsrk",
-  });
+const FollowersScreen = ({ route }) => {
+  const {type} = route.params;
+  const typeOfpage = type;
+  const auth = useSelector((state) => state.AuthReducer);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const followersData = [
-    {
-      id: 1,
-      name: "Tom Cruise",
-      image: require("../../../assets/images/avatar1.png"),
-      userName: "@tomcruise",
-    },
-    {
-      id: 2,
-      name: "Henry Cavill",
-      image: require("../../../assets/images/avatar2.png"),
-      userName: "@henrycavill",
-    },
-    {
-      id: 3,
-      name: "Daniel Criag",
-      image: require("../../../assets/images/avatar4.png"),
-      userName: "@craig007",
-    },
-  ];
+  const [followersData, setFollowersData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const filteredFollowers = followersData.filter((item) => {
-    return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return item.username.toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+  const fetchFollowers = async () => {
+    try {
+      const { data } = await axios.get(`${getFollowers}/${auth.userData.id}`);
+      setFollowersData(data.followers);
+      setIsLoading(false); // Stop loading after data is fetched
+      console.log("🚀 ~ fetchFollowers ~ data:", data);
+    } catch (error) {
+      setIsLoading(false); // Ensure loading is stopped if an error occurs
+      console.error("Failed to fetch followers:", error);
+    }
+  };
+
+  const fetchFollowing = async () => {
+    try {
+      const { data } = await axios.get(`${getFollwing}/${auth.userData.id}`);
+      setFollowersData(data.following);
+      setIsLoading(false); // Stop loading after data is fetched
+      console.log("🚀 ~ fetchFollowers ~ data:", data);
+    } catch (error) {
+      setIsLoading(false); // Ensure loading is stopped if an error occurs
+      console.error("Failed to fetch followers:", error);
+    }
+  };
+
+  useEffect(() => {
+    if(type === "followers"){
+      fetchFollowers();
+    }else {
+      fetchFollowing();
+    }
+    
+  }, []);
 
   return (
     <View style={styles.container}>
-      <ProfileHeader userData={userData} />
-      <View style={styles.searchBarContainer}>
-        <TextInputField
-          placeholder="Search"
-          icon_name={"search"}
-          onChangeText={(text) => setSearchQuery(text)}
-          value={searchQuery}
-        />
-      </View>
-      <FollowerList followersData={filteredFollowers} />
-    </View>
-  );
-};
-
-const ProfileHeader = ({ userData }) => {
-  return (
-    <View style={styles.header}>
-      <Image
-        source={require("../../../assets/images/avatar3.png")}
-        style={styles.profileImage}
+    <View style={{marginTop: moderateScale(20)}}>
+      <TextInputField
+        placeholder="Search"
+        icon_name={"search"}
+        onChangeText={(text) => setSearchQuery(text)}
+        value={searchQuery}
       />
-
-      <View style={styles.profileInfo}>
-        <Text style={styles.name}>{userData.name}</Text>
-        <Text style={styles.email}>{userData.email}</Text>
-      </View>
-      <TouchableOpacity style={styles.editButton}>
-        <Icon
-          name="create-outline"
-          size={moderateScale(20)}
-          color={color.white}
-        />
-      </TouchableOpacity>
     </View>
+    {isLoading ? (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color={color.maincolor} />
+      </View>
+    ) : (
+      <FollowerList followersData={filteredFollowers} type = {type} fetchFollowing = {fetchFollowing} />
+    )}
+  </View>
   );
 };
 
-const FollowerList = ({ followersData }) => {
+const FollowerList = ({ followersData, type, fetchFollowing }) => {
+  const auth = useSelector((state) => state.AuthReducer);
+
+  const handleUnfollow = async(id) => {
+    try {
+      const { data } = await axios.put(`${unfollow}`, {
+        userId: auth.userData.id,
+        unfollowId: id
+      });
+      fetchFollowing();
+    } catch (error) {
+      console.error("Failed to unfollow:", error);
+    }
+  }
+
   return (
     <View style={styles.followerListContainer}>
       <FlatList
         data={followersData}
         renderItem={({ item }) => (
           <View style={styles.followerItem}>
-            <Image source={item.image} style={styles.followerImage} />
+            <Image source={imagePath.logo} style={styles.followerImage} />
             <View style={styles.followerDetails}>
               <View>
-                <Text style={styles.followerName}>{item.name}</Text>
-                <Text style={styles.followerUserName}>{item.userName}</Text>
+                <Text style={styles.followerName}>{item?.username}</Text>
+                <Text
+                  style={styles.followerUserName}
+                >{`@${item?.username}`}</Text>
               </View>
-              <TouchableOpacity style={styles.followingButton}>
-                <Text style={styles.followingText}>Following</Text>
+              <TouchableOpacity style={styles.followingButton} onPress={() => handleUnfollow(item._id)}>
+                <Text style={styles.followingText}>{type === "following" ? "unfollow" : "follower"}</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id}
       />
     </View>
   );
@@ -186,6 +203,12 @@ const styles = StyleSheet.create({
     color: color.white,
     fontSize: moderateScale(14),
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  }
+  
 });
 
 export default FollowersScreen;

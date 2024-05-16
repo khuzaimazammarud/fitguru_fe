@@ -41,23 +41,7 @@ const SettingModal = ({ open, setOpen, navigation }) => {
                             <Text style={styles.text}>Add Post</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Icon type={Icons.FontAwesome} name={'gear'} size={25} color={color.white} />
-                            <Text style={styles.text}>Privacy and Setting</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={() => {
-                            navigation.navigate('EditScreen')
-                            setOpen(false)
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Icon type={Icons.FontAwesome} name={'pencil'} size={25} color={color.white} />
-                            <Text style={styles.text}>Edit Details</Text>
-                        </View>
-                    </TouchableOpacity>
+
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('SendEmail')
@@ -67,12 +51,6 @@ const SettingModal = ({ open, setOpen, navigation }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon type={Icons.FontAwesome} name={'lock'} size={25} color={color.white} />
                             <Text style={styles.text}>Update password</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Icon type={Icons.FontAwesome} name={'image'} size={25} color={color.white} />
-                            <Text style={styles.text}>Edit profile image</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
